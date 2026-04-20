@@ -1,3 +1,4 @@
+<!--For Ms. Prettiest Kehkashan in all of Kehkashan-->
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&display=swap');
@@ -215,6 +216,9 @@ canvas#fire{
 .note-wrap:nth-child(2) .paper:hover{transform:translateY(-6px) rotate(2deg);}
 .note-wrap:nth-child(3) .paper{transform:rotate(-1deg);}
 .note-wrap:nth-child(3) .paper:hover{transform:translateY(-6px) rotate(-2deg);}
+.note-wrap:nth-child(4){animation-delay:1.5s;}
+.note-wrap:nth-child(4) .paper{transform:rotate(2deg);}
+.note-wrap:nth-child(4) .paper:hover{transform:translateY(-6px) rotate(3deg);}
 
 /* ── CHAINS ── */
 .chain-overlay{
@@ -238,6 +242,7 @@ canvas#fire{
 .note-wrap:nth-child(1) .chain-overlay{animation-delay:-0.4s;}
 .note-wrap:nth-child(2) .chain-overlay{animation-delay:-1.6s;}
 .note-wrap:nth-child(3) .chain-overlay{animation-delay:-2.8s;}
+.note-wrap:nth-child(4) .chain-overlay{animation-delay:-0.9s;}
 
 @keyframes chain-sway{
   0%,100%{transform:rotate(-1.4deg);}
@@ -610,6 +615,51 @@ canvas#fire{
       <div class="note-caption">note iii</div>
     </div>
 
+    <!-- Note IV -->
+    <div class="note-wrap locked" id="note-3" onclick="clickNote(3)">
+      <div class="paper">
+        <div class="paper-top"></div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="paper-label">IV</div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="chain-overlay">
+        <svg viewBox="0 0 122 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="8" y1="8" x2="114" y2="152"/>
+            <ellipse cx="20" cy="22" rx="7" ry="4" transform="rotate(40 20 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="35" cy="40" rx="7" ry="4" transform="rotate(40 35 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="50" cy="58" rx="7" ry="4" transform="rotate(40 50 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="65" cy="78" rx="7" ry="4" transform="rotate(40 65 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="80" cy="98" rx="7" ry="4" transform="rotate(40 80 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="95" cy="117" rx="7" ry="4" transform="rotate(40 95 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="108" cy="138" rx="7" ry="4" transform="rotate(40 108 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="114" y1="8" x2="8" y2="152"/>
+            <ellipse cx="102" cy="22" rx="7" ry="4" transform="rotate(-40 102 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="87" cy="40" rx="7" ry="4" transform="rotate(-40 87 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="72" cy="58" rx="7" ry="4" transform="rotate(-40 72 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="57" cy="78" rx="7" ry="4" transform="rotate(-40 57 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="42" cy="98" rx="7" ry="4" transform="rotate(-40 42 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="27" cy="117" rx="7" ry="4" transform="rotate(-40 27 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="14" cy="138" rx="7" ry="4" transform="rotate(-40 14 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <g transform="translate(45,64)">
+            <rect x="0" y="10" width="32" height="24" rx="3" fill="#5a3a1a" stroke="#3a2208" stroke-width="2"/>
+            <path d="M8 10 V6 A8 8 0 0 1 24 6 V10" fill="none" stroke="#3a2208" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="16" cy="22" r="4" fill="#3a2208"/>
+            <rect x="14.5" y="22" width="3" height="6" rx="1" fill="#3a2208"/>
+          </g>
+        </svg>
+      </div>
+      </div>
+      <div class="note-caption">note iv</div>
+    </div>
+
   </div>
 </div>
 
@@ -657,7 +707,7 @@ canvas#fire{
 const notes = [
   {
     label: "I",
-    body: "a",
+    body: "خبرِ تحیُّرِ عشق سن۔\n\nTo : 8324\n\nI am going to keep this short and to the point( jk lol xd lmaodjekslsnsn).\n\nThe date is 15/01/21 and it is 12:24:55...56...57...58...59\n\nOk a shitty move, might just change my decision (12 bajay, badle iraade hamare 12 bjay... ok off topic). This might have kind of an improvisational tone to it because I am trying not to overthink this as overthinking wont get me anywhere.... also I'm sleep deprived rn sendups hain 18 se.....just bear this message... might pass your time a bit. Might even serve as an entertainment for atleast an hour because I AM NOT SENDING YOU THIS SOON (*laughs in evil*) OR AM I?(*dramatic sound effect*) no i'm probably not. Did I mention k mein chussein bht maarta hu.. you're gonna have to bear that as well while reading this. What? you're still here to listen to thande jokes? your choice.. don't blame me later ( acha mazaak kr raha hu aise hi message nahin bnd krdena). Also, do keep in mind k mein ye message bhejne k baad apna phone prbly kahin daffan kr aonga to jo bhi reply dia jayga (if there will be any....please let there be a reply) wo agr seen nahin hoga to ye mtlb nahin hai k ignore kia ja raha hai. (itni darr lagna to jaiz hai) I'm like courage the cowardly dog, except everything turned out in his favour at the end. well well well, look at me blabbering on and on about random things because I can't even write what I want to write. Like, it literally took me almost three years to realize it so I am prbly gonna need three years for this too... hohoho this will be kinda like my journal. isn't that a girls thi-....\n\nahm ahm, the point is this is probably gonna be pretty long so sit back, relax, grab some popcorn cause you are gonna be here a long time watching me have a mental breakdown. acha ab iska ye mtlb bhi nahin k agr mein ne ye message 3 saal k baad kia hai to iska reply bhi mujhe 3 saal k baad hi mile (plix). ok i get it i go off topic a lot. enough with the sighs already, sorry. its like geralt said in the witcher \"when i'm with you i speak more in a day than i've spoken in weeks\" okay okay i get it this is just a message but same thing innit? kia mtlb the witcher nahin dekha? abhi ye message bnd krein aur witcher dekhne k baad mukammal kia jay ku k AbHi To iS mEssAgE mEiN Bht sE wOrDs bAAkI hAin....\n\nokay thandi.... hey hey hey don't blame it on me i warned you on January 15 you chose to read it this far( thanks for that). kher thandi chussein to chalti rahein gi.. MUDE pe ate hain. here is the thing. Kuch kehna hai.. what i want to say...... what i am trying to say... is it supposed to be this hard.............. 'there is no trash cannot, there is only trash can....' (STOP ROLLING YOUR EYES AT EVERY CHUSS).\n\nShuru se Shuru karte hain..\n\nLooking back, it seems that i should have realized it then and there, but even if i did.... i could never have said it face to face... you dont know... when you were talking to me my feet would literally freeze and my ears would go red( I hope you never noticed that).. Quick logical question, why was i the one feeling butterflies in my stomach when i was only listening to you ( nahin mein ne naashte mein butterflies nahin khayn thi). your voice... it was like a melody to my ears ( acha sorry dramatic banne ki koshish kr raha tha hasna bnd krdein plix). I am kinda trembling even now. Is this what they call( may God forgive me for uttering the word ) Love? I had my doubts..BUT i did try to talk to you about it back then. NO not in the van khuda ka khauf karein i wouldve passed out before even saying... like literally before even saying anything.. you are at half fault for me not doing anything back then ( WOAH WOAH! Ghussa nahin mazaak kr raha hu ... abhi simp karunga allah ki kasam bas agey dekhye)\n\nmein ne 10th k baad ig acc dhoondne ki koshish ki but here's the thing... I am not a good stalker, i am the type of guy jo kahin gaana bhi sune to usse dhoondte dhoondte 2 mahine lg jaate hain ye to phir ig acc tha also why do you have three names like what was i supposed to search for kehkashan mir, kehkashan anjum, kehkashan anjum mir, kehkashan mir anjum, aur kehkashan k sahi spelling konse hote hain kehkashan, kahkashan, kehkeshan, kahkeshan, or is it really tarkashan like uncle used to say ( not that I am suggesting that it is not a beautiful name but you see the problem). therefore, i was unable to do anything and i slowly slowly started to give up on finding the acc.\n\nMEIN OVERTHINKER HU (mere mummy papa ne mujhe overthinker janam dye.... sorri if this meme is too outdated by the time i send you this waise outdated to abhi bhi hai). I am able to find 25 meanings in one sentence.... i don't know any other way. I made myself believe that it wasnt a mutual feeling because it wasnt and I should stop this.( bas depressing baato mein hi thinking capacity barhti hai kabhi koi faida nahin hota iska ) To mein ne socha k itne himmat to mere mein hai nahin k mein confront kr saku and i aint no joe goldberg either jo facebook, Instagram, Twitter, B-Form, CNIC sb aik din mein nikaal le lihaaza mein ne socha k REHN DO PHIR! ( Abhishek Upamanyu k standup comedy shows ache hote hain.. meri zindagi se compete nahin kr skte kher😤). And i started to just ignore all this . It was like Joey from FRIENDS said 'They're feelings... They'll just go away' ( dramatic banne ki koshish kamyaab) lkn ye baad mein pata laga k jitna suppress karo baad mein utna hi nuqsaan hota..\n\nkher kuch waqt aise guzar gaya aur school k baad toh koi contact bhi nae tha hamara toh for a short period but it somehow kept my mind off YOU ( see how i slid a reference in there.. hehehe... see how i slid into your DMs... ok i'll stop acting like a creep, sorry). Popcorn khtm ho gy honge koi aur snacks le ayn mein idhar hi hu.... time went on until November of 2020 arrived. a friend of mine just had a breakup (bht ganda katta tha bechare ka lkn apni ghalti ziada thi uski.. kher that is a story for another time, sorry for breaking your tempo) kher i went to his house the very next day ( its like the unsaid rule of the BRO CODE that you have to be there to console your friend(mein to usko zaleel krne gya tha ku k meri isne aik nahin suni jb mein ne isse mana kia) beshak clg se phutta maar k jaana pare, again sorry) there he was just talking about how he really liked her and all the other cringy things blah blah blah aur mein usko yhi keh raha tha k tra dimaagh khrab hai and blah blah blah. and then he asked me how would you know? do you even like anyone? ....... and...... i was reminded of you ( why is gumaan playing in the back of my mind) i told him k there was someone but iss k ilawa toh i did not even have anyhting to tell, kyu k mein ne toh aap ko kabhi bataya hi nahi. aur ye koi aik isolated instance bhi nahi tha, everytime aesa kch mention ho, im reminded of you, and not just reminded, fikar hona k how are you and what are you doing and wanting to know everything about you aur bahut zyada kuch. and this realization came too late k this is special, aur aap mere liye special hain. kyu k mein kisi aur k baarey mein aesey nahi sochta. the realization k i want to be a part of your life forever and want you to be a part of mine forever. there is no other way i want to live my life. i want to be there for you, always.\n\nI realized, almost all of my actions had been, in some way influenced by you since i met you. This also made me realize that i liked everything about you, from your name to your voice, heck, even the number of syllables in your name are perfect, the way it sounds( ok i'll stop sounding like a creep) And that got me started thinking, if anyone ever talks about stuff like this( Even jb ghazals parhaya krte the humhein your face would come across my mind...btw thanks to that mere urdu k paper ki tashreehat bht achi hogy thi, mein itni bkwaas kyu kr raha hu iss msg mein) and i'm reminded of you... Aise to nahin chalta na kia saari umer bs mukhre ki yaadon pe guzaarni hain?\n\nکب تک دل کی خیر منائیں۔\nکب تک راہ دکھلاو گے۔\nکب تک چین کی مہلت دو گے۔\nکب تک یاد نہ آوگے۔\n\nso i made a decision that i should atleast talk to you about this... so that i don't have any regrets afterwards ( regrets to kher se ye message send krne k baad hi shayad shuru ho jayn but not the point).. kher mein full motivated hua k bhai bas ab to baat kr k hi chorunga lkn OVERTHINKING JO MASTI HAI. How am I supposed to express something when I spent a long time trying to suppress it ( bad experience, 0/10, would not recommend it). mahina to in khayalat se nimat te hue nikal gya.\n\nkher kaafi jad o jehd k baad id mil gy ... wait a minute... aisi baatein batate hain? ( ab id ka naam na change ho jay bas jb tk mein ye bhejta hu warna phir masla hojayga )... ab id to mil gy lkn req bhejne ki himmat nahin ho rahi thi....... and then one late night. mein ne himmat e mardan madad e khuda sochte hue bhej di ( i forgot to include in my calculations 'WO KHUDA SB KI SUNTA HAI.... PR KISI KISI KO CHUNTA HAI). yaqeen krein mein kabhi itna insta nahin use kia jitna un dino kia tha just to check k req accept hui ya nahin( i know i am not supposed to be telling you this but i want you to know every tiny detail before rejecting me xd) .... aise krte krte bhi aik do din guzre.. Mere se suspense control nahin ho raha tha.... And then finally when i visited your acc i saw that my req got deleted( DHAZ DHAZ ).... US RAAT APUN DO BAJE TK JAAG K CHINESE CARTOONS DEKHA. Me, being a overthinker, started imagining many different scenarios take for example :\n\nmein ne request bheji bhi thi?(hn bhai bheji thi reject hue ho)\n\nshayad extremely private acc ho is lye..(ah yes, the optimistic approach)\n\nmein hu hi manhoos..(Brain suicidal thoughts dete hue)\n\nAise krte krte banda existential crisis mein chala jaata.\n\njust to be clear i am not implying that any of this is your fault... you obviously had your reasons that I should not know (probably for my own sake). Nevertheless, i did feel a bit.... bad. Phir Jiraya sahab ka quote yaad aya:\n\n'Rejection is a part of any man's life. If you can't accept and move past rejection, or at least use it as writing material - you're not a real man.'\n\ni didnt want to leave things there no no no that cant be how things end after i finally accepted the fact after three years. Never gonna give you up( you just got rickrolled ). and then i thought about writing this aur bas phir likhai shuru. felt cute started writing this, might send it after 5 years , might never send it, it might drift off into the void after getting deleted.. might remain in the message requests forever.\n\nwhen i get nervous, i start talking to people about the things in which i have information/experience helps me think we're on equal terms(lyf hack). That is probably the reason I am getting off topic alot during this message.\n\nKABHI KISI KO MESSAGE PE ITNA NERVOUS HOTE HUE DEKHA HAI? i am not even in the message rn abhi tk to pata bhi nahin k ye paragraph ( acha sorry maan lia 10 class k gadagari wale mazmoon se ziada bara essay hai.. ) apni manzil e maqsood pe phnche ga bhi k nahin. kher wo to baad mein dekha jayga.\n\nAsaan Bhasha Mein :\n\nI HAVE FEELINGS FOR YOU! (kisi ne suna to nahin)\n\nWhat's up with those eyes?.... ok i know this is cringe but you handled all those chussein above You can handle this.. You Go Girl!( I cant pull that off can I) plix don't tell anyone about this i don't want to be awkward in front of other people.. like literally don't tell anyone... ANYONE.... No no dont ss this cmon now i thought we had a deal..\n\nWow, wasn't that hard to do this it only took me just a little more than more than 4 years to realize this fact(that is like 48 months, like 2,073,600 min) and even now my ears are bloody red ...shit, my mom might just have figured something out..Even in your absence i feel like i am talking to you. Nevertheless I am not going to be denying this fact now... i dont know what i was doing these past three years ( actually i do know... i was watching chinese cartoons) and because i am an insecure piece of shit.... i could not confront you... i could not even confront my feelings and didn't want to come to terms with anything. It was in my heart all this time and i subconsciously knew everything but never had the guts. atleast now i feel enlightened. (feeling enlightened, might just fall into a pit of overthinking again). Here's the thing, I don't want to make you feel uncomfortable or start overthinking about anything ( past the point of return are we now m8 ). But I would like an answer ( either is good ). I don't care if it takes a day, a week, a month, or even a year..... ( classic F.R.I.E.N.D.S reference ). I'll be here.\n\nیہ سمجھ لیا ہے میں نے، کہ تو جانِ زندگی ہے۔\nیہی اِک خطا میری ہے۔\nیا سزا دے، یا جزا دے۔\n\nWow, you're still reading... Means a lot to me.\n\nAll the personalities of this gutless piece of worthless crap would like to thank you on this occasion for bearing all his thandi chussein, all those movies and songs references, all the times he got detracked and started telling his own stories, all the times he acted like a retard, all the times you got uncomfortable while reading this( sorry )... thank you for reading this message even if it was from a crap bag ( enough with the references ) like him.\n\nGood Job hanging in there, Queen.\n\nمنتظر\n\n———\n\nEdit : July 9, it is and im really here trying not to send a req or anything to mess up myself again but dil to bacha hai.\n\nOk sent the req, god why do i do this?\nHOLYYY SHITTTT, got a followback but you havent accepted mine, whatever the reason, i see this as an absolute win.\n\nJEOOO my req got accepted man good days are coming IA.\n\nnvm\n\nWHAT? WHAT JUST HAPPENED? Kuuuu? Ay khudaaa ku? After two years when i finally thought i couldve done something WHYYYY GOD WHYYYY (as joey says it). I just dont understand. What is this? Welp nvm i'll still be here. Waiting. As long as it takes. But yeah prbly on a 2 year sabbatical again. Man lifes gonna go real downhill now.\n\nKAHAANI KAHAN KHATAM HOTI HAI\nPOORI NAHI HAR QASAM HOTI HAI\nPHIR MILENGE KABHI AJNABI KI TRAAH\nIS AAAS MEIN DIL MEIN SUBAH RAKHI HAI",
     question: "What was your roll number in school?",
     answer: "8324",
     type: "text",
@@ -678,11 +728,21 @@ const notes = [
     answer: "09/01/2026",
     type: "date",
     errorMsg: "💔💔💔"
+  },
+  {
+    label: "IV",
+    body: "i have carried something with me for five years. love for you. but it was always yours. it was never mine to keep. it belonged to you the moment it was born. this love has been with me through everything. it guided me through a lot. it was the thing i came back to when everything else fell apart. and through all of it, it was yours. i was just holding it.\n\nand this past year, for the first time in five years, i have been happy. not because things are perfect. but because i finally get to give this love back to you. to return what was always yours. i get to love you fully, without having to hide it. you gave me a chance. you did not have to. and i do not take that for granted. however much of this love you choose to accept, i am just grateful. grateful that you are here. and grateful that i get to try.\n\ni hope i am doing it justice.",
+    question: "What color are you?",
+    answer: "purple",
+    type: "text",
+    errorMsg: "love of my life, you are the entire spectrum and more, but a shortsighted human like me can only assign a single color to you",
+    specialAnswer: "blue",
+    specialErrorMsg: "that's your fav color but what color are you to me?"
   }
 ];
 
 // track unlocked state
-const unlocked = [false, false, false];
+const unlocked = [false, false, false, false];
 let currentNote = -1;
 
 // ── populate date dropdowns ──
@@ -777,7 +837,12 @@ function submitAnswer(){
     document.getElementById(`note-${i}`).classList.remove('locked');
     showNoteContent(i);
   } else {
-    showError(i, note.errorMsg);
+    // check for special answer
+    if(note.specialAnswer && userAnswer.toLowerCase() === note.specialAnswer.toLowerCase()){
+      showError(i, note.specialErrorMsg);
+    } else {
+      showError(i, note.errorMsg);
+    }
   }
 }
 
