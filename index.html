@@ -1,0 +1,907 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:#000;
+  min-height:100vh;
+  font-family:'Cinzel',serif;
+  overflow-x:hidden;
+}
+
+#hell-screen{
+  position:relative;
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  transition:opacity 1.2s ease;
+}
+
+#hell-screen.fade-out{opacity:0;pointer-events:none;}
+
+canvas#fire{
+  position:absolute;
+  bottom:0;left:0;
+  width:100%;height:100%;
+  z-index:0;
+}
+
+.vignette{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at center,transparent 25%,#000 100%);
+  z-index:1;pointer-events:none;
+}
+
+.sparks-wrap{position:absolute;inset:0;z-index:1;pointer-events:none;}
+.sp{position:absolute;border-radius:50%;animation:spk linear infinite;}
+@keyframes spk{
+  0%{transform:translateY(100vh) translateX(0) scale(1);opacity:0;}
+  5%{opacity:1;}
+  100%{transform:translateY(-20vh) translateX(var(--dx)) scale(0.2);opacity:0;}
+}
+
+.hell-center{
+  position:relative;z-index:2;
+  text-align:center;padding:2rem;
+  max-width:680px;
+}
+
+.roman{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(0.7rem,2.2vw,1rem);
+  letter-spacing:10px;color:#660000;
+  text-transform:uppercase;margin-bottom:0.4rem;
+  animation:flk 3s ease-in-out infinite;
+}
+
+.yr{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:clamp(6rem,20vw,12rem);
+  color:#cc1100;line-height:0.85;
+  filter:drop-shadow(0 0 20px #ff2200) drop-shadow(0 0 60px #aa1100);
+  animation:hpls 1.8s ease-in-out infinite;
+}
+
+@keyframes hpls{
+  0%,100%{filter:drop-shadow(0 0 20px #ff2200) drop-shadow(0 0 60px #aa1100);}
+  50%{filter:drop-shadow(0 0 45px #ff5500) drop-shadow(0 0 110px #ff2200) drop-shadow(0 0 8px #ffaa00);}
+}
+
+.yr-sub{
+  font-family:'Cinzel',serif;
+  font-size:clamp(0.6rem,1.8vw,0.85rem);
+  letter-spacing:12px;color:#551100;
+  text-transform:uppercase;margin-bottom:2rem;
+}
+
+.crack{
+  width:80%;height:1px;
+  background:linear-gradient(to right,transparent,#cc2200 30%,#ff6600 50%,#cc2200 70%,transparent);
+  margin:0 auto 2rem;
+  box-shadow:0 0 8px #ff2200;
+  animation:flk 2s ease-in-out infinite;
+}
+
+@keyframes flk{
+  0%,100%{opacity:1;}45%{opacity:0.7;}46%{opacity:0.2;}47%{opacity:0.9;}80%{opacity:1;}81%{opacity:0.4;}82%{opacity:1;}
+}
+
+.headline{
+  font-family:'Cinzel',serif;
+  font-size:clamp(0.9rem,2.8vw,1.4rem);
+  color:#c8a090;line-height:1.8;
+  letter-spacing:2px;font-weight:400;
+  animation:flk 4s ease-in-out infinite;
+}
+
+.hw{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:1.6em;color:#ff2200;
+  filter:drop-shadow(0 0 8px #ff4400);
+  vertical-align:middle;line-height:1;
+}
+
+.bot{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(0.65rem,1.8vw,0.9rem);
+  color:#881100;letter-spacing:6px;
+  text-transform:uppercase;margin-top:2rem;
+  animation:flk 2.5s ease-in-out infinite;
+}
+
+/* ── NOTES SCREEN ── */
+#notes-screen{
+  display:none;
+  width:100%;min-height:100vh;
+  background:#f5d0a9;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:3rem 1rem;
+  opacity:0;
+  transition:opacity 1.2s ease;
+}
+
+#notes-screen.visible{display:flex;}
+#notes-screen.fade-in{opacity:1;}
+
+.notes-title{
+  font-family:'Cinzel Decorative',serif;
+  font-size:clamp(0.7rem,2vw,0.95rem);
+  color:#553322;letter-spacing:8px;
+  text-transform:uppercase;
+  margin-bottom:3rem;
+  animation:flk 3s infinite;
+}
+
+.notes-row{
+  display:flex;
+  gap:2.5rem;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:flex-end;
+}
+
+/* ── NOTE WRAP ── */
+.note-wrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:0.8rem;
+  cursor:pointer;
+  animation:flk 5s ease-in-out infinite;
+  position:relative;
+}
+
+.note-wrap:nth-child(2){animation-delay:0.5s;}
+.note-wrap:nth-child(3){animation-delay:1s;}
+
+/* paper */
+.paper{
+  width:110px;
+  background:#e8dcc8;
+  border-radius:2px;
+  position:relative;
+  box-shadow:3px 3px 0 #b8a888, 6px 6px 0 #988868;
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+  overflow:visible;
+}
+
+.paper:hover{
+  transform:translateY(-6px) rotate(-1deg);
+  box-shadow:5px 8px 0 #b8a888, 9px 12px 0 #988868;
+}
+
+.paper-top{
+  width:100%;height:8px;
+  background:#c8a060;
+  border-bottom:1px solid #a88040;
+}
+
+.paper-lines{
+  padding:10px 12px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+
+.pl{height:1px;background:#bbb09880;}
+
+.paper-label{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:1.6rem;
+  color:#8b6040;
+  text-align:center;
+  padding:0 0 10px;
+  line-height:1;
+}
+
+.note-caption{
+  font-family:'Cinzel',serif;
+  font-size:0.65rem;
+  letter-spacing:4px;
+  color:#553322;
+  text-transform:uppercase;
+}
+
+.note-wrap:nth-child(1) .paper{transform:rotate(-3deg);}
+.note-wrap:nth-child(1) .paper:hover{transform:translateY(-6px) rotate(-4deg);}
+.note-wrap:nth-child(2) .paper{transform:rotate(1deg);margin-top:-10px;}
+.note-wrap:nth-child(2) .paper:hover{transform:translateY(-6px) rotate(2deg);}
+.note-wrap:nth-child(3) .paper{transform:rotate(-1deg);}
+.note-wrap:nth-child(3) .paper:hover{transform:translateY(-6px) rotate(-2deg);}
+
+/* ── CHAINS ── */
+.chain-overlay{
+  position:absolute;
+  inset:-6px;
+  pointer-events:none;
+  z-index:10;
+  display:none;
+  transform-origin:50% 0;
+  animation:chain-sway 3.6s ease-in-out infinite;
+}
+
+.note-wrap.locked .chain-overlay{display:block;}
+
+.chain-overlay svg{
+  width:100%;height:100%;
+  overflow:visible;
+}
+
+/* stagger sway so chains don't swing in unison */
+.note-wrap:nth-child(1) .chain-overlay{animation-delay:-0.4s;}
+.note-wrap:nth-child(2) .chain-overlay{animation-delay:-1.6s;}
+.note-wrap:nth-child(3) .chain-overlay{animation-delay:-2.8s;}
+
+@keyframes chain-sway{
+  0%,100%{transform:rotate(-1.4deg);}
+  50%{transform:rotate(1.4deg);}
+}
+
+/* rattle animation — paper */
+@keyframes rattle{
+  0%{transform:translate(0,0) rotate(0deg);}
+  10%{transform:translate(-4px,2px) rotate(-2deg);}
+  20%{transform:translate(4px,-2px) rotate(2deg);}
+  30%{transform:translate(-3px,3px) rotate(-1deg);}
+  40%{transform:translate(3px,-1px) rotate(1deg);}
+  50%{transform:translate(-2px,2px) rotate(-1deg);}
+  60%{transform:translate(2px,-2px) rotate(0deg);}
+  70%{transform:translate(-1px,1px) rotate(1deg);}
+  80%{transform:translate(1px,-1px) rotate(-1deg);}
+  90%{transform:translate(-1px,0) rotate(0deg);}
+  100%{transform:translate(0,0) rotate(0deg);}
+}
+
+/* rattle animation — chains, more aggressive */
+@keyframes chain-rattle{
+  0%{transform:translate(0,0) rotate(0deg);}
+  8%{transform:translate(-7px,4px) rotate(-6deg);}
+  18%{transform:translate(7px,-3px) rotate(5deg);}
+  28%{transform:translate(-6px,5px) rotate(-4deg);}
+  38%{transform:translate(6px,-4px) rotate(4deg);}
+  48%{transform:translate(-5px,4px) rotate(-5deg);}
+  58%{transform:translate(5px,-3px) rotate(3deg);}
+  68%{transform:translate(-3px,3px) rotate(3deg);}
+  78%{transform:translate(3px,-2px) rotate(-2deg);}
+  88%{transform:translate(-1px,1px) rotate(1deg);}
+  100%{transform:translate(0,0) rotate(0deg);}
+}
+
+.note-wrap.rattle .paper{
+  animation:rattle 0.6s ease forwards !important;
+}
+.note-wrap.rattle .chain-overlay{
+  animation:chain-rattle 0.6s ease 0.06s forwards !important;
+}
+
+/* ── OVERLAY ── */
+.overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(0,0,0,0.85);
+  z-index:100;
+  align-items:center;
+  justify-content:center;
+  padding:2rem;
+}
+
+.overlay.open{display:flex;}
+
+.open-note{
+  background:#e8dcc8;
+  max-width:500px;width:100%;
+  max-height:80vh;
+  display:flex;
+  flex-direction:column;
+  padding:2.5rem 2.5rem 3rem;
+  position:relative;
+  border-radius:2px;
+  box-shadow:8px 8px 0 #988868;
+  animation:noteopen 0.3s ease;
+  overflow:hidden;
+}
+
+#note-content-view.active{
+  display:block;
+  overflow-y:auto;
+  flex:1;
+  padding-right:0.5rem;
+}
+
+#lock-prompt.active{
+  display:flex;
+  overflow-y:auto;
+  flex:1;
+}
+
+@keyframes noteopen{
+  from{transform:scale(0.85) rotate(-3deg);opacity:0;}
+  to{transform:scale(1) rotate(0deg);opacity:1;}
+}
+
+.open-note-lines{
+  margin-bottom:1.5rem;
+  display:flex;flex-direction:column;gap:6px;
+}
+
+.open-note-content{
+  font-family:'Cinzel',serif;
+  font-size:1rem;
+  color:#3a2510;
+  line-height:1.9;
+  letter-spacing:1px;
+  position:relative;
+  z-index:1;
+}
+
+.open-note-label{
+  font-family:'UnifrakturMaguntia',cursive;
+  font-size:2rem;color:#8b6040;
+  margin-bottom:1rem;
+}
+
+.close-btn{
+  position:absolute;top:1rem;right:1rem;
+  background:none;border:none;
+  font-family:'Cinzel',serif;
+  font-size:0.7rem;letter-spacing:3px;
+  color:#8b6040;cursor:pointer;
+  text-transform:uppercase;
+}
+
+/* ── LOCK PROMPT (inside overlay) ── */
+#lock-prompt{
+  display:none;
+  flex-direction:column;
+  gap:1.2rem;
+}
+
+#lock-prompt.active{display:flex;}
+
+.lock-question{
+  font-family:'Cinzel',serif;
+  font-size:0.9rem;
+  color:#3a2510;
+  letter-spacing:1px;
+  line-height:1.8;
+}
+
+.lock-input{
+  font-family:'Cinzel',serif;
+  font-size:0.85rem;
+  color:#3a2510;
+  background:#f5efe5;
+  border:1px solid #b8a888;
+  border-bottom:2px solid #8b6040;
+  padding:0.5rem 0.7rem;
+  width:100%;
+  outline:none;
+  letter-spacing:1px;
+}
+
+.lock-input:focus{
+  border-color:#8b6040;
+  background:#fffbf5;
+}
+
+/* date dropdowns */
+.date-row{
+  display:flex;
+  gap:0.5rem;
+  align-items:center;
+}
+
+.date-select{
+  font-family:'Cinzel',serif;
+  font-size:0.8rem;
+  color:#3a2510;
+  background:#f5efe5;
+  border:1px solid #b8a888;
+  border-bottom:2px solid #8b6040;
+  padding:0.4rem 0.5rem;
+  outline:none;
+  cursor:pointer;
+  flex:1;
+}
+
+.date-sep{
+  font-family:'Cinzel',serif;
+  font-size:0.9rem;
+  color:#8b6040;
+  font-weight:600;
+}
+
+.lock-submit{
+  font-family:'Cinzel',serif;
+  font-size:0.7rem;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:#f5efe5;
+  background:#8b6040;
+  border:none;
+  padding:0.6rem 1.4rem;
+  cursor:pointer;
+  align-self:flex-start;
+  transition:background 0.2s;
+}
+
+.lock-submit:hover{background:#6a4828;}
+
+.lock-error{
+  font-family:'Cinzel',serif;
+  font-size:0.8rem;
+  color:#8b1a00;
+  letter-spacing:1px;
+  line-height:1.7;
+  min-height:1.4rem;
+  display:none;
+}
+
+.lock-error.visible{display:block;}
+
+/* note content view */
+#note-content-view{display:none;}
+#note-content-view.active{display:block;}
+</style>
+
+<div id="hell-screen">
+  <canvas id="fire"></canvas>
+  <div class="vignette"></div>
+  <div class="sparks-wrap" id="sparks"></div>
+  <div class="hell-center">
+    <div class="yr">1</div>
+    <div class="crack"></div>
+    <div class="headline">
+      year of me stepping into your life<br>
+      and making it &nbsp;<span class="hw">hell</span>
+    </div>
+    <div class="crack" style="margin-top:2rem;margin-bottom:0;"></div>
+    <div class="bot">happy anniversary</div>
+  </div>
+</div>
+
+<div id="notes-screen">
+  <div class="notes-title">— MANWA K LYE —</div>
+  <div class="notes-row">
+
+    <!-- Note I -->
+    <div class="note-wrap locked" id="note-0" onclick="clickNote(0)">
+      <div class="paper">
+        <div class="paper-top"></div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="paper-label">I</div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="chain-overlay">
+        <svg viewBox="0 0 122 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <!-- diagonal chain 1: top-left to bottom-right -->
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="8" y1="8" x2="114" y2="152"/>
+            <!-- chain links along diagonal 1 -->
+            <ellipse cx="20" cy="22" rx="7" ry="4" transform="rotate(40 20 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="35" cy="40" rx="7" ry="4" transform="rotate(40 35 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="50" cy="58" rx="7" ry="4" transform="rotate(40 50 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="65" cy="78" rx="7" ry="4" transform="rotate(40 65 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="80" cy="98" rx="7" ry="4" transform="rotate(40 80 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="95" cy="117" rx="7" ry="4" transform="rotate(40 95 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="108" cy="138" rx="7" ry="4" transform="rotate(40 108 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <!-- diagonal chain 2: top-right to bottom-left -->
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="114" y1="8" x2="8" y2="152"/>
+            <ellipse cx="102" cy="22" rx="7" ry="4" transform="rotate(-40 102 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="87" cy="40" rx="7" ry="4" transform="rotate(-40 87 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="72" cy="58" rx="7" ry="4" transform="rotate(-40 72 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="57" cy="78" rx="7" ry="4" transform="rotate(-40 57 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="42" cy="98" rx="7" ry="4" transform="rotate(-40 42 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="27" cy="117" rx="7" ry="4" transform="rotate(-40 27 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="14" cy="138" rx="7" ry="4" transform="rotate(-40 14 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <!-- padlock at center -->
+          <g transform="translate(45,64)">
+            <rect x="0" y="10" width="32" height="24" rx="3" fill="#5a3a1a" stroke="#3a2208" stroke-width="2"/>
+            <path d="M8 10 V6 A8 8 0 0 1 24 6 V10" fill="none" stroke="#3a2208" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="16" cy="22" r="4" fill="#3a2208"/>
+            <rect x="14.5" y="22" width="3" height="6" rx="1" fill="#3a2208"/>
+          </g>
+        </svg>
+      </div>
+      </div>
+      <div class="note-caption">note i</div>
+    </div>
+
+    <!-- Note II -->
+    <div class="note-wrap locked" id="note-1" onclick="clickNote(1)">
+      <div class="paper">
+        <div class="paper-top"></div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="paper-label">II</div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="chain-overlay">
+        <svg viewBox="0 0 122 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="8" y1="8" x2="114" y2="152"/>
+            <ellipse cx="20" cy="22" rx="7" ry="4" transform="rotate(40 20 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="35" cy="40" rx="7" ry="4" transform="rotate(40 35 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="50" cy="58" rx="7" ry="4" transform="rotate(40 50 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="65" cy="78" rx="7" ry="4" transform="rotate(40 65 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="80" cy="98" rx="7" ry="4" transform="rotate(40 80 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="95" cy="117" rx="7" ry="4" transform="rotate(40 95 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="108" cy="138" rx="7" ry="4" transform="rotate(40 108 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="114" y1="8" x2="8" y2="152"/>
+            <ellipse cx="102" cy="22" rx="7" ry="4" transform="rotate(-40 102 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="87" cy="40" rx="7" ry="4" transform="rotate(-40 87 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="72" cy="58" rx="7" ry="4" transform="rotate(-40 72 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="57" cy="78" rx="7" ry="4" transform="rotate(-40 57 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="42" cy="98" rx="7" ry="4" transform="rotate(-40 42 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="27" cy="117" rx="7" ry="4" transform="rotate(-40 27 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="14" cy="138" rx="7" ry="4" transform="rotate(-40 14 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <g transform="translate(45,64)">
+            <rect x="0" y="10" width="32" height="24" rx="3" fill="#5a3a1a" stroke="#3a2208" stroke-width="2"/>
+            <path d="M8 10 V6 A8 8 0 0 1 24 6 V10" fill="none" stroke="#3a2208" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="16" cy="22" r="4" fill="#3a2208"/>
+            <rect x="14.5" y="22" width="3" height="6" rx="1" fill="#3a2208"/>
+          </g>
+        </svg>
+      </div>
+      </div>
+      <div class="note-caption">note ii</div>
+    </div>
+
+    <!-- Note III -->
+    <div class="note-wrap locked" id="note-2" onclick="clickNote(2)">
+      <div class="paper">
+        <div class="paper-top"></div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="paper-label">III</div>
+        <div class="paper-lines">
+          <div class="pl"></div><div class="pl"></div>
+        </div>
+        <div class="chain-overlay">
+        <svg viewBox="0 0 122 160" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="8" y1="8" x2="114" y2="152"/>
+            <ellipse cx="20" cy="22" rx="7" ry="4" transform="rotate(40 20 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="35" cy="40" rx="7" ry="4" transform="rotate(40 35 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="50" cy="58" rx="7" ry="4" transform="rotate(40 50 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="65" cy="78" rx="7" ry="4" transform="rotate(40 65 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="80" cy="98" rx="7" ry="4" transform="rotate(40 80 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="95" cy="117" rx="7" ry="4" transform="rotate(40 95 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="108" cy="138" rx="7" ry="4" transform="rotate(40 108 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <g stroke="#5a3a1a" stroke-width="3.5" fill="none" stroke-linecap="round">
+            <line x1="114" y1="8" x2="8" y2="152"/>
+            <ellipse cx="102" cy="22" rx="7" ry="4" transform="rotate(-40 102 22)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="87" cy="40" rx="7" ry="4" transform="rotate(-40 87 40)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="72" cy="58" rx="7" ry="4" transform="rotate(-40 72 58)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="57" cy="78" rx="7" ry="4" transform="rotate(-40 57 78)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="42" cy="98" rx="7" ry="4" transform="rotate(-40 42 98)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="27" cy="117" rx="7" ry="4" transform="rotate(-40 27 117)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+            <ellipse cx="14" cy="138" rx="7" ry="4" transform="rotate(-40 14 138)" fill="#7a5530" stroke="#5a3a1a" stroke-width="2.5"/>
+          </g>
+          <g transform="translate(45,64)">
+            <rect x="0" y="10" width="32" height="24" rx="3" fill="#5a3a1a" stroke="#3a2208" stroke-width="2"/>
+            <path d="M8 10 V6 A8 8 0 0 1 24 6 V10" fill="none" stroke="#3a2208" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="16" cy="22" r="4" fill="#3a2208"/>
+            <rect x="14.5" y="22" width="3" height="6" rx="1" fill="#3a2208"/>
+          </g>
+        </svg>
+      </div>
+      </div>
+      <div class="note-caption">note iii</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="open-note" id="open-note">
+    <button class="close-btn" onclick="closeNote()">× close</button>
+    <div class="open-note-label" id="note-label"></div>
+    <div class="open-note-lines">
+      <div class="pl" style="background:#bbb09850;height:1px;"></div>
+      <div class="pl" style="background:#bbb09850;height:1px;"></div>
+    </div>
+
+    <!-- Lock prompt view -->
+    <div id="lock-prompt">
+      <div class="lock-question" id="lock-question"></div>
+      <!-- text input (notes 0 & 1) -->
+      <input class="lock-input" id="lock-text-input" type="text" placeholder="your answer..." autocomplete="off" onkeydown="if(event.key==='Enter')submitAnswer()"/>
+      <!-- date input (note 2) -->
+      <div class="date-row" id="lock-date-row">
+        <select class="date-select" id="dd">
+          <option value="">DD</option>
+        </select>
+        <span class="date-sep">/</span>
+        <select class="date-select" id="mm">
+          <option value="">MM</option>
+        </select>
+        <span class="date-sep">/</span>
+        <select class="date-select" id="yyyy">
+          <option value="">YYYY</option>
+        </select>
+      </div>
+      <button class="lock-submit" onclick="submitAnswer()">unlock</button>
+      <div class="lock-error" id="lock-error"></div>
+    </div>
+
+    <!-- Note content view -->
+    <div id="note-content-view">
+      <div class="open-note-content" id="note-body"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const notes = [
+  {
+    label: "I",
+    body: "a",
+    question: "What was your roll number in school?",
+    answer: "8324",
+    type: "text",
+    errorMsg: "Really? you don't know your roll number?"
+  },
+  {
+    label: "II",
+    body: "i think about December 12 more than i should. 5 years of nothing and then you were just... there. walking up to me. i had 5 years to prepare and i had nothing. i forgot every single thing i had planned to say. because you were still you. still the most gorgeous woman i have ever seen in my life. i will gladly fall for every ragebait if it means i get to have you in my life forever. you are the most beautiful, considerate person i have ever had the privilege of knowing. you notice things. you remember things. you make people feel seen, like they matter, without even trying. even after five years, everything i saw in you was still there. everything because of which I fell for you was still there. i know i cannot quantify it. i cannot list it down. but it is all still there.\ni know.",
+    question: "What is your nickname at home?",
+    answer: "bushra",
+    type: "text",
+    errorMsg: "ohoo, you hate it so much that you don't want to write it down?"
+  },
+  {
+    label: "III",
+    body: "were i a poet,\ni would have been better at expressing things to you\ni would have been better at telling you how much you mean to me\ni would have done justice to my feelings,\nby using the correct words\n\nwere i a poet,\ni would have written about your name\nkehkashan\nhow you grew up to be exactly that,\na galaxy,\nvast and radiant\nand impossible to look away from\n\nwere i a poet,\ni would have written about the way you look\nand the way you are\nhow both exist together so effortlessly in you\nbeautiful in a way that is obvious\ninnocent in a way that is rare\n\nwere i a poet,\nand you did not exist,\ni would have penned you to existence\ni would have written you into every empty page\nuntil the universe had no choice but to make you real\n\nbut i am no poet\nyou just make me wish i was\nand all i am left saying is\ni love you",
+    question: "What date did I first say I love you?",
+    answer: "09/01/2026",
+    type: "date",
+    errorMsg: "💔💔💔"
+  }
+];
+
+// track unlocked state
+const unlocked = [false, false, false];
+let currentNote = -1;
+
+// ── populate date dropdowns ──
+const ddEl = document.getElementById('dd');
+const mmEl = document.getElementById('mm');
+const yyyyEl = document.getElementById('yyyy');
+
+for(let d=1;d<=31;d++){
+  const o=document.createElement('option');
+  o.value=String(d).padStart(2,'0');
+  o.textContent=String(d).padStart(2,'0');
+  ddEl.appendChild(o);
+}
+for(let m=1;m<=12;m++){
+  const o=document.createElement('option');
+  o.value=String(m).padStart(2,'0');
+  o.textContent=String(m).padStart(2,'0');
+  mmEl.appendChild(o);
+}
+for(let y=2020;y<=2030;y++){
+  const o=document.createElement('option');
+  o.value=String(y);
+  o.textContent=String(y);
+  yyyyEl.appendChild(o);
+}
+
+// ── click note ──
+function clickNote(i){
+  currentNote = i;
+  const note = notes[i];
+  document.getElementById('note-label').textContent = note.label;
+  document.getElementById('lock-error').textContent = '';
+  document.getElementById('lock-error').classList.remove('visible');
+
+  if(unlocked[i]){
+    showNoteContent(i);
+  } else {
+    showLockPrompt(i);
+  }
+  document.getElementById('overlay').classList.add('open');
+}
+
+function showLockPrompt(i){
+  const note = notes[i];
+  document.getElementById('lock-prompt').classList.add('active');
+  document.getElementById('note-content-view').classList.remove('active');
+  document.getElementById('lock-question').textContent = note.question;
+
+  const isDate = note.type === 'date';
+  document.getElementById('lock-text-input').style.display = isDate ? 'none' : 'block';
+  document.getElementById('lock-date-row').style.display = isDate ? 'flex' : 'none';
+
+  if(!isDate){
+    document.getElementById('lock-text-input').value = '';
+    setTimeout(()=>document.getElementById('lock-text-input').focus(), 100);
+  } else {
+    ddEl.value = '';
+    mmEl.value = '';
+    yyyyEl.value = '';
+  }
+}
+
+function showNoteContent(i){
+  document.getElementById('lock-prompt').classList.remove('active');
+  document.getElementById('note-content-view').classList.add('active');
+  document.getElementById('note-body').innerHTML = notes[i].body.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+}
+
+function submitAnswer(){
+  const i = currentNote;
+  const note = notes[i];
+  let userAnswer = '';
+
+  if(note.type === 'date'){
+    const d = ddEl.value;
+    const m = mmEl.value;
+    const y = yyyyEl.value;
+    if(!d || !m || !y){
+      showError(i, note.errorMsg);
+      return;
+    }
+    userAnswer = `${d}/${m}/${y}`;
+  } else {
+    userAnswer = document.getElementById('lock-text-input').value.trim();
+  }
+
+  const correct = userAnswer.toLowerCase() === note.answer.toLowerCase();
+
+  if(correct){
+    unlocked[i] = true;
+    // remove chains
+    document.getElementById(`note-${i}`).classList.remove('locked');
+    showNoteContent(i);
+  } else {
+    showError(i, note.errorMsg);
+  }
+}
+
+function showError(i, msg){
+  const errEl = document.getElementById('lock-error');
+  errEl.textContent = msg;
+  errEl.classList.add('visible');
+
+  // rattle the note
+  const noteEl = document.getElementById(`note-${i}`);
+  noteEl.classList.remove('rattle');
+  void noteEl.offsetWidth; // reflow to restart animation
+  noteEl.classList.add('rattle');
+  setTimeout(()=>noteEl.classList.remove('rattle'), 700);
+}
+
+function closeNote(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('lock-prompt').classList.remove('active');
+  document.getElementById('note-content-view').classList.remove('active');
+}
+
+function overlayClick(e){
+  if(e.target === document.getElementById('overlay')) closeNote();
+}
+
+// ── FIRE CANVAS ──
+const canvas = document.getElementById('fire');
+const ctx = canvas.getContext('2d');
+
+function resize(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const COLS = 100;
+let W, H, colW, buf1, buf2, rows;
+
+function initFire(){
+  W = canvas.width; H = canvas.height; colW = W/COLS;
+  rows = Math.ceil(H/colW);
+  buf1 = new Float32Array(COLS*(rows+2)).fill(0);
+  buf2 = new Float32Array(COLS*(rows+2)).fill(0);
+  for(let x=0;x<COLS;x++){
+    buf1[(rows-1)*COLS+x]=0.7+Math.random()*0.3;
+    buf1[rows*COLS+x]=1.0;
+  }
+}
+initFire();
+window.addEventListener('resize',()=>{resize();initFire();});
+
+function fireColor(v){
+  v=Math.max(0,Math.min(1,v));
+  if(v<0.3){const t=v/0.3;return `rgba(${Math.round(20*t)},0,0,${v*2})`;}
+  else if(v<0.6){const t=(v-0.3)/0.3;return `rgba(${Math.round(20+200*t)},${Math.round(t*30)},0,${0.6+t*0.3})`;}
+  else if(v<0.85){const t=(v-0.6)/0.25;return `rgba(${Math.round(220+35*t)},${Math.round(30+130*t)},0,${0.9+t*0.1})`;}
+  else{const t=(v-0.85)/0.15;return `rgba(255,${Math.round(160+95*t)},${Math.round(t*80)},1)`;}
+}
+
+const FILL_DURATION=7000;
+const START_TIME=Date.now();
+
+function stepFire(){
+  const elapsed=Date.now()-START_TIME;
+  const fillProgress=Math.min(1,elapsed/FILL_DURATION);
+  const fillLevel=Math.floor(rows*(1-fillProgress));
+
+  for(let x=0;x<COLS;x++){
+    buf1[(rows-1)*COLS+x]=Math.max(0.5,buf1[(rows-1)*COLS+x]+(Math.random()-0.3)*0.3);
+    buf1[rows*COLS+x]=1.0;
+  }
+  for(let r=0;r<rows-1;r++)for(let c=0;c<COLS;c++){
+    const l=c>0?buf1[r*COLS+(c-1)]:buf1[r*COLS+c];
+    const ri=c<COLS-1?buf1[r*COLS+(c+1)]:buf1[r*COLS+c];
+    const d=buf1[(r+1)*COLS+c];
+    const d2=r+2<rows?buf1[(r+2)*COLS+c]:d;
+    buf2[r*COLS+c]=Math.max(0,(l+ri+d+d2)/4.08-0.012);
+  }
+  [buf1,buf2]=[buf2,buf1];
+
+  for(let r=Math.max(0,fillLevel);r<rows;r++){
+    for(let c=0;c<COLS;c++){
+      const solid=0.85+Math.random()*0.15;
+      if(buf1[r*COLS+c]<solid)buf1[r*COLS+c]=solid;
+    }
+  }
+}
+
+function drawFire(){
+  ctx.clearRect(0,0,W,H);
+  const cellH=H/rows;
+  for(let r=0;r<rows;r++)for(let c=0;c<COLS;c++){
+    const v=buf1[r*COLS+c];if(v<0.01)continue;
+    ctx.fillStyle=fireColor(v);
+    ctx.fillRect(c*colW,r*cellH,colW+1,cellH+1);
+  }
+}
+
+let running=true;
+function loop(){if(!running)return;stepFire();drawFire();requestAnimationFrame(loop);}
+loop();
+
+// sparks
+const sc=['#ff2200','#ff5500','#ff8800','#ffaa00','#ffdd00'];
+const sparksEl=document.getElementById('sparks');
+for(let i=0;i<30;i++){
+  const el=document.createElement('div');el.className='sp';
+  const size=1.5+Math.random()*3;
+  el.style.cssText=`left:${5+Math.random()*90}%;width:${size}px;height:${size}px;background:${sc[Math.floor(Math.random()*sc.length)]};animation-duration:${3+Math.random()*7}s;animation-delay:${Math.random()*8}s;--dx:${(Math.random()-0.5)*120}px;`;
+  sparksEl.appendChild(el);
+}
+
+// transition to notes screen after 7s
+setTimeout(()=>{
+  const hell=document.getElementById('hell-screen');
+  const notesS=document.getElementById('notes-screen');
+  hell.classList.add('fade-out');
+  setTimeout(()=>{
+    hell.style.display='none';
+    running=false;
+    notesS.classList.add('visible');
+    setTimeout(()=>notesS.classList.add('fade-in'),50);
+  },1200);
+},7000);
+</script>
