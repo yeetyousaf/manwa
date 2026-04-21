@@ -19,7 +19,6 @@
       overflow: hidden;
     }
 
-    /* ── CURSOR TRAIL CANVAS (global) ── */
     #cursor-trail-canvas-global {
       position: fixed;
       inset: 0;
@@ -27,44 +26,32 @@
       pointer-events: none;
     }
 
-    /* ── ENTER SCREEN ── */
     #enter-screen {
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background: #0a0e27;
-    cursor: default;
-  }
-
-    .speaker-icon {
-    cursor: pointer;
-  }
-    
-    .speaker-icon {
-    width: 90px;
-    height: 90px;
-    color: #fffacd;
-    animation: speaker-glow 2s ease-in-out infinite;
-    display: block;
-    line-height: 0;
-  }
-
-
-    .speaker-icon svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* ── PERSISTENT VIDEO BG (always visible) ── */
-    #persistent-bg {
       position: fixed;
       inset: 0;
-      z-index: 0;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #0a0e27;
+      cursor: default;
     }
+
+    .speaker-icon { cursor: pointer; }
+
+    .speaker-icon {
+      width: 90px;
+      height: 90px;
+      color: #fffacd;
+      animation: speaker-glow 2s ease-in-out infinite;
+      display: block;
+      line-height: 0;
+    }
+
+    .speaker-icon svg { width: 100%; height: 100%; }
+
+    #persistent-bg { position: fixed; inset: 0; z-index: 0; }
 
     .video-bg {
       position: absolute;
@@ -82,7 +69,6 @@
       z-index: 1;
     }
 
-    /* ── SCENE 1 foreground only (text + particles) ── */
     #scene1 {
       position: fixed;
       inset: 0;
@@ -95,10 +81,7 @@
       pointer-events: auto;
     }
 
-    #scene1.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
+    #scene1.fade-out { opacity: 0; pointer-events: none; }
 
     #particles-canvas {
       position: absolute;
@@ -107,7 +90,6 @@
       pointer-events: none;
     }
 
-    /* Text groups */
     #text-group-top {
       position: absolute;
       top: 28%;
@@ -161,34 +143,13 @@
       letter-spacing: 3px;
     }
 
-    .scene-line.visible {
-      opacity: 1;
-    }
+    .scene-line.visible { opacity: 1; }
 
-    /* ── SCENE 2 ── */
-    #scene2 {
-      position: fixed;
-      inset: 0;
-      display: none;
-      z-index: 10;
-    }
+    #scene2 { position: fixed; inset: 0; display: none; z-index: 10; }
+    #scene2.visible { display: flex; }
 
-    #scene2.visible {
-      display: flex;
-    }
-
-    #constellation-wrapper {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      height: 100%;
-    }
-
-    #constellation-canvas {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
+    #constellation-wrapper { position: relative; z-index: 2; width: 100%; height: 100%; }
+    #constellation-canvas { position: absolute; inset: 0; z-index: 1; }
 
     .constellation-title {
       position: absolute;
@@ -244,41 +205,40 @@
       position: relative;
     }
 
-    .star-wrapper.dim .star {
-      background: #2a3560;
-      box-shadow: 0 0 3px rgba(42, 53, 96, 0.4);
-    }
+    .star-wrapper.dim .star { background: #2a3560; box-shadow: 0 0 3px rgba(42, 53, 96, 0.4); }
 
     .star-wrapper.lit .star {
       background: #fffacd;
       box-shadow: 0 0 18px rgba(255, 250, 205, 0.9), 0 0 40px rgba(255, 210, 100, 0.6), 0 0 70px rgba(255, 180, 60, 0.3);
     }
 
-    .star-wrapper.active .star {
-      animation: star-pulse 2s ease-in-out infinite;
-    }
+    .star-wrapper.active .star { animation: star-pulse 2s ease-in-out infinite; }
 
     @keyframes star-pulse {
-      0%, 100% {
-        box-shadow: 0 0 8px rgba(224, 230, 255, 0.5);
-        transform: scale(1);
-      }
-      50% {
-        box-shadow: 0 0 28px rgba(224, 230, 255, 0.95), 0 0 50px rgba(180, 200, 255, 0.4);
-        transform: scale(1.4);
-      }
+      0%, 100% { box-shadow: 0 0 8px rgba(224, 230, 255, 0.5); transform: scale(1); }
+      50% { box-shadow: 0 0 28px rgba(224, 230, 255, 0.95), 0 0 50px rgba(180, 200, 255, 0.4); transform: scale(1.4); }
     }
 
     @keyframes speaker-glow {
-    0%, 100% {
-      filter: drop-shadow(0 0 8px rgba(255, 250, 205, 0.6)) drop-shadow(0 0 20px rgba(255, 210, 100, 0.3));
+      0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 250, 205, 0.6)) drop-shadow(0 0 20px rgba(255, 210, 100, 0.3)); }
+      50% { filter: drop-shadow(0 0 22px rgba(255, 250, 205, 1)) drop-shadow(0 0 50px rgba(255, 210, 100, 0.7)); }
     }
-    50% {
-      filter: drop-shadow(0 0 22px rgba(255, 250, 205, 1)) drop-shadow(0 0 50px rgba(255, 210, 100, 0.7));
-    }
-  }
 
-    /* ── OVERLAY ── */
+    /* ── SHAKE ANIMATION ── */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      15%       { transform: translateX(-7px); }
+      30%       { transform: translateX(7px); }
+      45%       { transform: translateX(-6px); }
+      60%       { transform: translateX(6px); }
+      75%       { transform: translateX(-4px); }
+      90%       { transform: translateX(4px); }
+    }
+
+    .shake {
+      animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
     .overlay {
       display: none;
       position: fixed;
@@ -291,9 +251,7 @@
       padding: 2rem;
     }
 
-    .overlay.open {
-      display: flex;
-    }
+    .overlay.open { display: flex; }
 
     .overlay-content {
       background: linear-gradient(135deg, rgba(28, 36, 70, 0.97) 0%, rgba(16, 20, 44, 0.97) 100%);
@@ -344,17 +302,9 @@
       text-shadow: 0 0 15px rgba(255, 250, 205, 0.4);
     }
 
-    .divider {
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(200, 215, 255, 0.25), transparent);
-    }
+    .divider { height: 1px; background: linear-gradient(to right, transparent, rgba(200, 215, 255, 0.25), transparent); }
 
-    #lock-prompt {
-      display: none;
-      flex-direction: column;
-      gap: 1.2rem;
-    }
-
+    #lock-prompt { display: none; flex-direction: column; gap: 1.2rem; }
     #lock-prompt.active { display: flex; }
 
     .lock-question {
@@ -379,10 +329,7 @@
       transition: all 0.2s;
     }
 
-    .date-select option {
-      background: #0e1230;
-      color: #e0e6ff;
-    }
+    .date-select option { background: #0e1230; color: #e0e6ff; }
 
     .lock-input:focus, .date-select:focus {
       border-color: rgba(255, 250, 205, 0.4);
@@ -390,11 +337,7 @@
       box-shadow: 0 0 15px rgba(255, 250, 205, 0.15);
     }
 
-    .date-row {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
+    .date-row { display: flex; gap: 0.5rem; align-items: center; }
 
     .date-select {
       flex: 1;
@@ -422,10 +365,7 @@
       margin-top: 0.5rem;
     }
 
-    .lock-submit:hover {
-      background: rgba(255, 250, 205, 0.22);
-      box-shadow: 0 0 18px rgba(255, 250, 205, 0.18);
-    }
+    .lock-submit:hover { background: rgba(255, 250, 205, 0.22); box-shadow: 0 0 18px rgba(255, 250, 205, 0.18); }
 
     .lock-error {
       font-family: 'Cinzel', serif;
@@ -466,7 +406,6 @@
       .scene-line { white-space: normal; }
     }
 
-    /* ── NOTIFICATION ── */
     #note-notification {
       position: fixed;
       bottom: 6rem;
@@ -477,15 +416,15 @@
       transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease;
       pointer-events: none;
     }
-    #note-notification.show {
-      transform: translateX(-50%) translateY(0);
-      opacity: 1;
-    }
+
+    #note-notification.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
     #note-notification.hide {
       transform: translateX(-50%) translateY(-14px);
       opacity: 0;
       transition: transform 0.4s ease, opacity 0.4s ease;
     }
+
     .notif-inner {
       background: rgba(14, 18, 42, 0.93);
       border: 1px solid rgba(255, 245, 160, 0.2);
@@ -498,6 +437,7 @@
       white-space: nowrap;
       box-shadow: 0 8px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,245,160,0.07);
     }
+
     .notif-dot {
       width: 14px;
       height: 14px;
@@ -506,6 +446,7 @@
       box-shadow: 0 0 14px rgba(255, 250, 205, 0.9);
       flex-shrink: 0;
     }
+
     .notif-text {
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
@@ -515,18 +456,14 @@
       color: rgba(200, 218, 255, 0.75);
       text-transform: uppercase;
     }
-    .notif-text em {
-      font-style: normal;
-      color: #fffacd;
-    }
+
+    .notif-text em { font-style: normal; color: #fffacd; }
   </style>
 </head>
 <body>
 
-<!-- CUSTOM CURSOR -->
 <canvas id="cursor-trail-canvas-global"></canvas>
 
-<!-- ENTER SCREEN -->
 <div id="enter-screen">
   <span class="speaker-icon" id="speaker-btn" onclick="startExperience()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
@@ -538,28 +475,23 @@
   <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:1.8rem;letter-spacing:3px;color:#fffacd;text-align:center;margin-top:1.8rem;opacity:0.7;text-transform:uppercase;white-space:nowrap;line-height:1.5;">open on laptop and use headphones for a better experience</p>
 </div>
 
-<!-- PERSISTENT VIDEO BG — never fades -->
 <div id="persistent-bg">
   <video class="video-bg" autoplay muted loop playsinline preload="auto" src="sitaare_asmaan_se_khoye_h_nae.mp4"></video>
   <div class="overlay-bg"></div>
 </div>
 
-<!-- SCENE 1 — text + particles only, this is what fades -->
 <div id="scene1">
   <canvas id="particles-canvas"></canvas>
-
   <div id="text-group-top">
     <div class="scene-line line-title" id="line-0">kehkashan,</div>
     <div class="scene-line" id="line-1">a year of you</div>
   </div>
-
   <div id="text-group-bottom">
     <div class="scene-line" id="line-2">and i would choose every second of it</div>
     <div class="scene-line line-small" id="line-3">again</div>
   </div>
 </div>
 
-<!-- SCENE 2 -->
 <div id="scene2">
   <div class="constellation-title">— manwa k lye —</div>
   <div id="constellation-wrapper">
@@ -569,7 +501,6 @@
   </div>
 </div>
 
-<!-- OVERLAY -->
 <div class="overlay" id="overlay" onclick="overlayClick(event)">
   <div class="overlay-content" onclick="event.stopPropagation()">
     <button class="close-btn" onclick="closeNote()">× close</button>
@@ -597,7 +528,6 @@
   </div>
 </div>
 
-<!-- NOTIFICATION -->
 <div id="note-notification">
   <div class="notif-inner">
     <div class="notif-dot"></div>
@@ -606,96 +536,57 @@
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// GLOBAL CUSTOM CURSOR + SPARKLE TRAIL
-// ─────────────────────────────────────────────
+// ── CURSOR TRAIL ──
 const trailCanvas = document.getElementById('cursor-trail-canvas-global');
 const trailCtx = trailCanvas.getContext('2d');
 trailCanvas.width = window.innerWidth;
 trailCanvas.height = window.innerHeight;
 
 const sparkles = [];
-let mouseX = window.innerWidth / 2;
-let mouseY = window.innerHeight / 2;
-let isMoving = false;
-let moveTimer = null;
-
-// Cursor dot state
-const cursorDot = {
-  x: mouseX,
-  y: mouseY,
-  radius: 5,
-  // inner glow ring pulse phase
-  phase: 0
-};
+let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+let isMoving = false, moveTimer = null;
+const cursorDot = { x: mouseX, y: mouseY, radius: 5, phase: 0 };
 
 document.addEventListener('mousemove', e => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-  isMoving = true;
-
-  // Clear the idle timer on each move
+  mouseX = e.clientX; mouseY = e.clientY; isMoving = true;
   if (moveTimer) clearTimeout(moveTimer);
   moveTimer = setTimeout(() => { isMoving = false; }, 80);
-
-  // Burst of sparkles while moving
   const count = 3 + Math.floor(Math.random() * 3);
-  for (let i = 0; i < count; i++) {
-    spawnSparkle(mouseX, mouseY, true);
-  }
+  for (let i = 0; i < count; i++) spawnSparkle(mouseX, mouseY, true);
 });
 
 function spawnSparkle(x, y, moving) {
   const angle = Math.random() * Math.PI * 2;
-  const speed = moving
-    ? 0.4 + Math.random() * 1.2
-    : 0.1 + Math.random() * 0.4;
+  const speed = moving ? 0.4 + Math.random() * 1.2 : 0.1 + Math.random() * 0.4;
   const spread = moving ? 6 : 3;
-
   sparkles.push({
     x: x + (Math.random() - 0.5) * spread,
     y: y + (Math.random() - 0.5) * spread,
-    size: moving
-      ? 0.8 + Math.random() * 2.2
-      : 0.4 + Math.random() * 1.2,
-    alpha: moving
-      ? 0.55 + Math.random() * 0.45
-      : 0.2 + Math.random() * 0.3,
+    size: moving ? 0.8 + Math.random() * 2.2 : 0.4 + Math.random() * 1.2,
+    alpha: moving ? 0.55 + Math.random() * 0.45 : 0.2 + Math.random() * 0.3,
     vx: Math.cos(angle) * speed,
     vy: Math.sin(angle) * speed - (moving ? 0.3 : 0.15),
-    decay: moving
-      ? 0.022 + Math.random() * 0.028
-      : 0.008 + Math.random() * 0.012,
+    decay: moving ? 0.022 + Math.random() * 0.028 : 0.008 + Math.random() * 0.012,
     color: Math.random() > 0.45 ? '#fffacd' : '#c8d8ff'
   });
 }
 
-// Idle sparkle emitter — runs always, low rate
 let idleSparkleFrame = 0;
 function emitIdleSparkles() {
   idleSparkleFrame++;
-  // emit roughly every 4 frames when idle, every 8 when moving (moving has its own burst)
   if (!isMoving && idleSparkleFrame % 4 === 0) {
     const count = 1 + Math.floor(Math.random() * 2);
-    for (let i = 0; i < count; i++) {
-      spawnSparkle(mouseX, mouseY, false);
-    }
+    for (let i = 0; i < count; i++) spawnSparkle(mouseX, mouseY, false);
   }
 }
 
 function animateTrail() {
   trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
-
   emitIdleSparkles();
-
-  // ── Draw sparkle particles ──
   for (let i = sparkles.length - 1; i >= 0; i--) {
     const s = sparkles[i];
-    s.x += s.vx;
-    s.y += s.vy;
-    s.alpha -= s.decay;
+    s.x += s.vx; s.y += s.vy; s.alpha -= s.decay;
     if (s.alpha <= 0) { sparkles.splice(i, 1); continue; }
-
     trailCtx.save();
     trailCtx.globalAlpha = s.alpha;
     trailCtx.fillStyle = s.color;
@@ -706,34 +597,19 @@ function animateTrail() {
     trailCtx.fill();
     trailCtx.restore();
   }
-
-  // ── Draw cursor dot ──
   cursorDot.phase += 0.045;
   const pulse = 0.5 + 0.5 * Math.sin(cursorDot.phase);
-
-  // Outer soft halo
   const haloR = 10 + 3 * pulse;
   const halo = trailCtx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, haloR);
   halo.addColorStop(0, `rgba(255, 250, 205, ${0.18 + 0.10 * pulse})`);
   halo.addColorStop(1, 'rgba(255, 250, 205, 0)');
-  trailCtx.save();
-  trailCtx.fillStyle = halo;
-  trailCtx.beginPath();
-  trailCtx.arc(mouseX, mouseY, haloR, 0, Math.PI * 2);
-  trailCtx.fill();
-  trailCtx.restore();
-
-  // Core dot
-  trailCtx.save();
-  trailCtx.beginPath();
+  trailCtx.save(); trailCtx.fillStyle = halo; trailCtx.beginPath();
+  trailCtx.arc(mouseX, mouseY, haloR, 0, Math.PI * 2); trailCtx.fill(); trailCtx.restore();
+  trailCtx.save(); trailCtx.beginPath();
   trailCtx.arc(mouseX, mouseY, 3.5, 0, Math.PI * 2);
-  trailCtx.fillStyle = '#fffacd';
-  trailCtx.shadowColor = '#fffacd';
-  trailCtx.shadowBlur = 8 + 6 * pulse;
-  trailCtx.globalAlpha = 0.92;
-  trailCtx.fill();
-  trailCtx.restore();
-
+  trailCtx.fillStyle = '#fffacd'; trailCtx.shadowColor = '#fffacd';
+  trailCtx.shadowBlur = 8 + 6 * pulse; trailCtx.globalAlpha = 0.92;
+  trailCtx.fill(); trailCtx.restore();
   requestAnimationFrame(animateTrail);
 }
 animateTrail();
@@ -743,9 +619,7 @@ window.addEventListener('resize', () => {
   trailCanvas.height = window.innerHeight;
 });
 
-// ─────────────────────────────────────────────
-// NOTES DATA
-// ─────────────────────────────────────────────
+// ── NOTES DATA ──
 const notes = [
   {
     label: "I",
@@ -798,9 +672,7 @@ const notes = [
   }
 ];
 
-// ─────────────────────────────────────────────
-// DATE DROPDOWNS
-// ─────────────────────────────────────────────
+// ── DATE DROPDOWNS ──
 const ddEl = document.getElementById('dd');
 const mmEl = document.getElementById('mm');
 const yyyyEl = document.getElementById('yyyy');
@@ -808,35 +680,25 @@ for(let d=1;d<=31;d++){const o=document.createElement('option');o.value=String(d
 for(let m=1;m<=12;m++){const o=document.createElement('option');o.value=String(m).padStart(2,'0');o.textContent=String(m).padStart(2,'0');mmEl.appendChild(o);}
 for(let y=2020;y<=2030;y++){const o=document.createElement('option');o.value=String(y);o.textContent=String(y);yyyyEl.appendChild(o);}
 
-// ─────────────────────────────────────────────
-// AUDIO
-// ─────────────────────────────────────────────
+// ── AUDIO ──
 let bgAudio;
 
 function startExperience() {
   document.getElementById('enter-screen').style.display = 'none';
-
   bgAudio = new Audio('sajni.mp3');
   bgAudio.loop = true;
   bgAudio.volume = 0;
-
-  bgAudio.play().then(() => {
-    bgAudio.currentTime = 211;
-  }).catch((e) => { console.log('audio error:', e); });
-
+  bgAudio.play().then(() => { bgAudio.currentTime = 211; }).catch(e => console.log('audio error:', e));
   let vol = 0;
   const fadeIn = setInterval(() => {
     vol = Math.min(vol + 0.02, 0.5);
     bgAudio.volume = vol;
     if (vol >= 0.5) clearInterval(fadeIn);
   }, 100);
-
   runScene1();
 }
-  
-// ─────────────────────────────────────────────
-// SCENE 1 — PARTICLE + TEXT ANIMATION
-// ─────────────────────────────────────────────
+
+// ── SCENE 1 ──
 const pCanvas = document.getElementById('particles-canvas');
 const pCtx = pCanvas.getContext('2d');
 pCanvas.width = window.innerWidth;
@@ -862,56 +724,32 @@ class Particle {
 }
 
 for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
-
 setTimeout(() => {
   pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
   particles.forEach(p => p.draw());
   pCtx.globalAlpha = 1;
 }, 100);
 
-let animRunning = false;
-
-function disperseAll() {
-  return new Promise(resolve => {
-    setTimeout(resolve, 400);
-  });
-}
+function disperseAll() { return new Promise(resolve => setTimeout(resolve, 400)); }
 
 async function runScene1() {
   await delay(1200);
-
-  fadeInLine('line-0');
-  await delay(300);
-  fadeInLine('line-1');
-  await delay(2800);
-
-  fadeInLine('line-2');
-  await delay(300);
-  fadeInLine('line-3');
-
-  await delay(3000);
-
+  fadeInLine('line-0'); await delay(300);
+  fadeInLine('line-1'); await delay(2800);
+  fadeInLine('line-2'); await delay(300);
+  fadeInLine('line-3'); await delay(3000);
   await disperseAll();
-
   const scene1 = document.getElementById('scene1');
   scene1.classList.add('fade-out');
   await delay(1200);
   scene1.style.display = 'none';
-  animRunning = false;
-
   initScene2();
 }
 
-function fadeInLine(id) {
-  const el = document.getElementById(id);
-  if (el) el.classList.add('visible');
-}
-
+function fadeInLine(id) { const el = document.getElementById(id); if (el) el.classList.add('visible'); }
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-// ─────────────────────────────────────────────
-// SCENE 2 — CONSTELLATION
-// ─────────────────────────────────────────────
+// ── SCENE 2 ──
 const starPositions = [
   { x: 0.18, y: 0.28 },
   { x: 0.65, y: 0.20 },
@@ -926,13 +764,11 @@ let conCanvas, conCtx;
 function initScene2() {
   const scene2 = document.getElementById('scene2');
   scene2.classList.add('visible');
-
   conCanvas = document.getElementById('constellation-canvas');
   conCtx = conCanvas.getContext('2d');
   conCanvas.width = window.innerWidth;
   conCanvas.height = window.innerHeight;
 
-  // ── SHOOTING STAR SETUP ──
   const ssCanvas = document.getElementById('shooting-star-canvas');
   const ssCtx = ssCanvas.getContext('2d');
   ssCanvas.width = window.innerWidth;
@@ -945,27 +781,21 @@ function initScene2() {
     const length = 120 + Math.random() * 160;
     const speed = 5 + Math.random() * 4;
     const tailLength = length;
-
     let progress = 0;
     const totalDist = length + tailLength;
-
     function frame() {
       ssCtx.clearRect(0, 0, ssCanvas.width, ssCanvas.height);
       progress += speed;
-
       const headX = startX + Math.cos(angle) * progress;
       const headY = startY + Math.sin(angle) * progress;
       const tailStartProgress = Math.max(0, progress - tailLength);
       const tailX = startX + Math.cos(angle) * tailStartProgress;
       const tailY = startY + Math.sin(angle) * tailStartProgress;
-
       const fade = progress < tailLength ? progress / tailLength : 1 - (progress - tailLength) / tailLength;
-
       const grad = ssCtx.createLinearGradient(tailX, tailY, headX, headY);
       grad.addColorStop(0, `rgba(255, 250, 220, 0)`);
       grad.addColorStop(0.6, `rgba(255, 248, 210, ${fade * 0.5})`);
       grad.addColorStop(1, `rgba(255, 255, 240, ${fade})`);
-
       ssCtx.save();
       ssCtx.strokeStyle = grad;
       ssCtx.lineWidth = 1.5;
@@ -976,28 +806,15 @@ function initScene2() {
       ssCtx.lineTo(headX, headY);
       ssCtx.stroke();
       ssCtx.restore();
-
-      if (progress < totalDist) {
-        requestAnimationFrame(frame);
-      } else {
-        ssCtx.clearRect(0, 0, ssCanvas.width, ssCanvas.height);
-        scheduleNext();
-      }
+      if (progress < totalDist) requestAnimationFrame(frame);
+      else { ssCtx.clearRect(0, 0, ssCanvas.width, ssCanvas.height); scheduleNext(); }
     }
     frame();
   }
 
-  function scheduleNext() {
-    const wait = 7000 + Math.random() * 9000;
-    setTimeout(launchShootingStar, wait);
-  }
-
+  function scheduleNext() { setTimeout(launchShootingStar, 7000 + Math.random() * 9000); }
   setTimeout(launchShootingStar, 3000);
-
-  window.addEventListener('resize', () => {
-    ssCanvas.width = window.innerWidth;
-    ssCanvas.height = window.innerHeight;
-  });
+  window.addEventListener('resize', () => { ssCanvas.width = window.innerWidth; ssCanvas.height = window.innerHeight; });
 
   const container = document.getElementById('stars-container');
   starPositions.forEach((pos, idx) => {
@@ -1011,14 +828,11 @@ function initScene2() {
     wrapper.addEventListener('mouseenter', () => {
       if (!wrapper.classList.contains('active') && !wrapper.classList.contains('lit')) return;
       const pos = getStarPx(idx);
-      const duration = 700;
-      const maxR = 22;
-      const start = Date.now();
+      const duration = 700, maxR = 22, start = Date.now();
       function ripple() {
         const t = Math.min(1, (Date.now() - start) / duration);
         const eased = 1 - Math.pow(1 - t, 3);
-        const r = maxR * eased;
-        const alpha = (1 - t) * 0.55;
+        const r = maxR * eased, alpha = (1 - t) * 0.55;
         redrawConstellation();
         conCtx.save();
         conCtx.beginPath();
@@ -1033,18 +847,13 @@ function initScene2() {
       }
       ripple();
     });
-
-    const hit = document.createElement('div');
-    hit.className = 'star-hit';
-    const star = document.createElement('div');
-    star.className = 'star';
-    wrapper.appendChild(hit);
-    wrapper.appendChild(star);
+    const hit = document.createElement('div'); hit.className = 'star-hit';
+    const star = document.createElement('div'); star.className = 'star';
+    wrapper.appendChild(hit); wrapper.appendChild(star);
     container.appendChild(wrapper);
   });
 
   drawConstellationAnimated();
-
   (function pulseLoop() {
     if (drawnGlow.length > 0) redrawConstellation();
     requestAnimationFrame(pulseLoop);
@@ -1052,76 +861,49 @@ function initScene2() {
 }
 
 function getStarPx(idx) {
-  return {
-    x: starPositions[idx].x * conCanvas.width,
-    y: starPositions[idx].y * conCanvas.height
-  };
+  return { x: starPositions[idx].x * conCanvas.width, y: starPositions[idx].y * conCanvas.height };
 }
 
 function animateLine(fromIdx, toIdx, duration, color, lineWidth) {
   return new Promise(resolve => {
-    const from = getStarPx(fromIdx);
-    const to   = getStarPx(toIdx);
-    const start = Date.now();
-
+    const from = getStarPx(fromIdx), to = getStarPx(toIdx), start = Date.now();
     function frame() {
       const t = Math.min(1, (Date.now() - start) / duration);
-      const cx = from.x + (to.x - from.x) * t;
-      const cy = from.y + (to.y - from.y) * t;
-
+      const cx = from.x + (to.x - from.x) * t, cy = from.y + (to.y - from.y) * t;
       redrawConstellation();
-
       conCtx.save();
       conCtx.strokeStyle = color || 'rgba(200, 215, 255, 0.35)';
-      conCtx.lineWidth   = lineWidth || 1;
-      conCtx.beginPath();
-      conCtx.moveTo(from.x, from.y);
-      conCtx.lineTo(cx, cy);
-      conCtx.stroke();
+      conCtx.lineWidth = lineWidth || 1;
+      conCtx.beginPath(); conCtx.moveTo(from.x, from.y); conCtx.lineTo(cx, cy); conCtx.stroke();
       conCtx.restore();
-
-      if (t < 1) requestAnimationFrame(frame);
-      else resolve();
+      if (t < 1) requestAnimationFrame(frame); else resolve();
     }
     frame();
   });
 }
 
-const drawnSegments = [];
-const drawnGlow = [];
+const drawnSegments = [], drawnGlow = [];
 
 function redrawConstellation() {
   conCtx.clearRect(0, 0, conCanvas.width, conCanvas.height);
-
   drawnSegments.forEach(seg => {
-    const from = getStarPx(seg);
-    const to   = getStarPx(seg + 1);
+    const from = getStarPx(seg), to = getStarPx(seg + 1);
     conCtx.save();
     conCtx.strokeStyle = 'rgba(200, 215, 255, 0.25)';
-    conCtx.lineWidth   = 1;
-    conCtx.beginPath();
-    conCtx.moveTo(from.x, from.y);
-    conCtx.lineTo(to.x, to.y);
-    conCtx.stroke();
+    conCtx.lineWidth = 1;
+    conCtx.beginPath(); conCtx.moveTo(from.x, from.y); conCtx.lineTo(to.x, to.y); conCtx.stroke();
     conCtx.restore();
   });
-
   drawnGlow.forEach(g => {
-    const from = getStarPx(g.from);
-    const to   = getStarPx(g.to);
+    const from = getStarPx(g.from), to = getStarPx(g.to);
     const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 1400 + g.from);
-    const opacity = 0.45 + 0.35 * pulse;
-    const blur    = 6 + 10 * pulse;
-    const width   = 1.2 + 0.8 * pulse;
+    const opacity = 0.45 + 0.35 * pulse, blur = 6 + 10 * pulse, width = 1.2 + 0.8 * pulse;
     conCtx.save();
     conCtx.strokeStyle = `rgba(255, 245, 160, ${opacity})`;
-    conCtx.lineWidth   = width;
+    conCtx.lineWidth = width;
     conCtx.shadowColor = 'rgba(255, 220, 80, 0.6)';
-    conCtx.shadowBlur  = blur;
-    conCtx.beginPath();
-    conCtx.moveTo(from.x, from.y);
-    conCtx.lineTo(to.x, to.y);
-    conCtx.stroke();
+    conCtx.shadowBlur = blur;
+    conCtx.beginPath(); conCtx.moveTo(from.x, from.y); conCtx.lineTo(to.x, to.y); conCtx.stroke();
     conCtx.restore();
   });
 }
@@ -1137,36 +919,22 @@ async function drawConstellationAnimated() {
 
 function illuminatePathway(fromIdx, toIdx) {
   return new Promise(resolve => {
-    const from = getStarPx(fromIdx);
-    const to   = getStarPx(toIdx);
-    const start = Date.now();
-    const duration = 2800;
-
+    const from = getStarPx(fromIdx), to = getStarPx(toIdx);
+    const start = Date.now(), duration = 2800;
     function frame() {
       const t = Math.min(1, (Date.now() - start) / duration);
       const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
       redrawConstellation();
-
-      const cx = from.x + (to.x - from.x) * eased;
-      const cy = from.y + (to.y - from.y) * eased;
-
+      const cx = from.x + (to.x - from.x) * eased, cy = from.y + (to.y - from.y) * eased;
       conCtx.save();
       conCtx.strokeStyle = 'rgba(255, 245, 160, 0.85)';
-      conCtx.lineWidth   = 2;
+      conCtx.lineWidth = 2;
       conCtx.shadowColor = 'rgba(255, 220, 80, 0.7)';
-      conCtx.shadowBlur  = 12;
-      conCtx.beginPath();
-      conCtx.moveTo(from.x, from.y);
-      conCtx.lineTo(cx, cy);
-      conCtx.stroke();
+      conCtx.shadowBlur = 12;
+      conCtx.beginPath(); conCtx.moveTo(from.x, from.y); conCtx.lineTo(cx, cy); conCtx.stroke();
       conCtx.restore();
-
       if (t < 1) requestAnimationFrame(frame);
-      else {
-        drawnGlow.push({ from: fromIdx, to: toIdx });
-        triggerStarImpact(toIdx);
-        resolve();
-      }
+      else { drawnGlow.push({ from: fromIdx, to: toIdx }); triggerStarImpact(toIdx); resolve(); }
     }
     frame();
   });
@@ -1174,95 +942,69 @@ function illuminatePathway(fromIdx, toIdx) {
 
 function triggerStarImpact(idx) {
   const pos = getStarPx(idx);
-  const rings = [
-    { delay: 0,   maxR: 28, duration: 700 },
-    { delay: 140, maxR: 46, duration: 850 },
-    { delay: 300, maxR: 64, duration: 1000 },
-  ];
-  rings.forEach(({ delay, maxR, duration }) => {
-    setTimeout(() => {
-      const start = Date.now();
-      function frame() {
-        const t = Math.min(1, (Date.now() - start) / duration);
-        const r = maxR * t;
-        const alpha = (1 - t) * 0.75;
-        redrawConstellation();
-        conCtx.save();
-        conCtx.beginPath();
-        conCtx.arc(pos.x, pos.y, r, 0, Math.PI * 2);
-        conCtx.strokeStyle = `rgba(255, 245, 160, ${alpha})`;
-        conCtx.lineWidth = 1.5;
-        conCtx.shadowColor = 'rgba(255, 220, 80, 0.4)';
-        conCtx.shadowBlur = 8;
-        conCtx.stroke();
-        conCtx.restore();
-        if (t < 1) requestAnimationFrame(frame);
-      }
-      frame();
-    }, delay);
-  });
+  [{ delay: 0, maxR: 28, duration: 700 }, { delay: 140, maxR: 46, duration: 850 }, { delay: 300, maxR: 64, duration: 1000 }]
+    .forEach(({ delay, maxR, duration }) => {
+      setTimeout(() => {
+        const start = Date.now();
+        function frame() {
+          const t = Math.min(1, (Date.now() - start) / duration);
+          const r = maxR * t, alpha = (1 - t) * 0.75;
+          redrawConstellation();
+          conCtx.save();
+          conCtx.beginPath();
+          conCtx.arc(pos.x, pos.y, r, 0, Math.PI * 2);
+          conCtx.strokeStyle = `rgba(255, 245, 160, ${alpha})`;
+          conCtx.lineWidth = 1.5;
+          conCtx.shadowColor = 'rgba(255, 220, 80, 0.4)';
+          conCtx.shadowBlur = 8;
+          conCtx.stroke();
+          conCtx.restore();
+          if (t < 1) requestAnimationFrame(frame);
+        }
+        frame();
+      }, delay);
+    });
 }
 
 function dudPathway(fromIdx, toIdx) {
   return new Promise(resolve => {
-    const from = getStarPx(fromIdx);
-    const to   = getStarPx(toIdx);
+    const from = getStarPx(fromIdx), to = getStarPx(toIdx);
     const fizzleAt = 0.55 + Math.random() * 0.1;
-    const drawDuration = 1800;
-    const retractDuration = 900;
-
+    const drawDuration = 1800, retractDuration = 900;
     let fizzleX, fizzleY;
     const drawStart = Date.now();
-
     function drawFrame() {
       const t = Math.min(1, (Date.now() - drawStart) / drawDuration);
       const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
       const progress = eased * fizzleAt;
-
       fizzleX = from.x + (to.x - from.x) * progress;
       fizzleY = from.y + (to.y - from.y) * progress;
-
       redrawConstellation();
       conCtx.save();
       conCtx.strokeStyle = 'rgba(255, 245, 160, 0.85)';
-      conCtx.lineWidth   = 2;
+      conCtx.lineWidth = 2;
       conCtx.shadowColor = 'rgba(255, 220, 80, 0.7)';
-      conCtx.shadowBlur  = 12;
-      conCtx.beginPath();
-      conCtx.moveTo(from.x, from.y);
-      conCtx.lineTo(fizzleX, fizzleY);
-      conCtx.stroke();
+      conCtx.shadowBlur = 12;
+      conCtx.beginPath(); conCtx.moveTo(from.x, from.y); conCtx.lineTo(fizzleX, fizzleY); conCtx.stroke();
       conCtx.restore();
-
-      if (t < 1) {
-        requestAnimationFrame(drawFrame);
-      } else {
+      if (t < 1) { requestAnimationFrame(drawFrame); }
+      else {
         const retractStart = Date.now();
         function retractFrame() {
           const rt = Math.min(1, (Date.now() - retractStart) / retractDuration);
           const easedR = rt * rt;
-
           const headX = fizzleX + (from.x - fizzleX) * easedR;
           const headY = fizzleY + (from.y - fizzleY) * easedR;
-
           redrawConstellation();
           conCtx.save();
           conCtx.strokeStyle = 'rgba(255, 245, 160, 0.85)';
-          conCtx.lineWidth   = 2;
+          conCtx.lineWidth = 2;
           conCtx.shadowColor = 'rgba(255, 220, 80, 0.7)';
-          conCtx.shadowBlur  = 12;
-          conCtx.beginPath();
-          conCtx.moveTo(from.x, from.y);
-          conCtx.lineTo(headX, headY);
-          conCtx.stroke();
+          conCtx.shadowBlur = 12;
+          conCtx.beginPath(); conCtx.moveTo(from.x, from.y); conCtx.lineTo(headX, headY); conCtx.stroke();
           conCtx.restore();
-
-          if (rt < 1) {
-            requestAnimationFrame(retractFrame);
-          } else {
-            redrawConstellation();
-            resolve();
-          }
+          if (rt < 1) requestAnimationFrame(retractFrame);
+          else { redrawConstellation(); resolve(); }
         }
         requestAnimationFrame(retractFrame);
       }
@@ -1271,29 +1013,20 @@ function dudPathway(fromIdx, toIdx) {
   });
 }
 
-// ─────────────────────────────────────────────
-// NOTIFICATION
-// ─────────────────────────────────────────────
+// ── NOTIFICATION ──
 let _notifTimer = null;
 
-function showNotification(label) {
-  _triggerNotif(`note <em>${label}</em> can now be read`);
-}
-
-function showNotificationCustom(msg) {
-  _triggerNotif(msg);
-}
+function showNotification(label) { _triggerNotif(`note <em>${label}</em> can now be read`); }
+function showNotificationCustom(msg) { _triggerNotif(msg); }
 
 function _triggerNotif(html) {
   const el = document.getElementById('note-notification');
   const txt = document.getElementById('notif-text');
   txt.innerHTML = html;
-
   if (_notifTimer) { clearTimeout(_notifTimer); _notifTimer = null; }
   el.classList.remove('hide', 'show');
   void el.offsetWidth;
   el.classList.add('show');
-
   _notifTimer = setTimeout(() => {
     el.classList.remove('show');
     el.classList.add('hide');
@@ -1301,28 +1034,20 @@ function _triggerNotif(html) {
   }, 3600);
 }
 
-// ─────────────────────────────────────────────
-// STAR CLICK / NOTES
-// ─────────────────────────────────────────────
+// ── STAR CLICK / NOTES ──
 const trolled = [false, false, false, false];
 
 function clickStar(idx) {
   const passedCount = unlocked.filter((v, i) => v || trolled[i]).length;
   if (idx !== passedCount && !unlocked[idx] && !trolled[idx]) return;
-
   currentNote = idx;
   const note = notes[idx];
   document.getElementById('note-label').textContent = note.label;
   document.getElementById('lock-error').textContent = '';
   document.getElementById('lock-error').classList.remove('visible');
-
-  if (unlocked[idx]) {
-    showNoteContent(idx);
-  } else if (note.subLock && trolled[idx]) {
-    showLockPrompt(note.subLock);
-  } else {
-    showLockPrompt(note);
-  }
+  if (unlocked[idx]) showNoteContent(idx);
+  else if (note.subLock && trolled[idx]) showLockPrompt(note.subLock);
+  else showLockPrompt(note);
   document.getElementById('overlay').classList.add('open');
 }
 
@@ -1332,23 +1057,18 @@ function showLockPrompt(source) {
   document.getElementById('lock-question').textContent = source.question;
   document.getElementById('lock-error').textContent = '';
   document.getElementById('lock-error').classList.remove('visible');
-
   const isDate = source.type === 'date';
   document.getElementById('lock-text-input').style.display = isDate ? 'none' : 'block';
   document.getElementById('lock-date-row').style.display = isDate ? 'flex' : 'none';
-
   if (!isDate) {
     document.getElementById('lock-text-input').value = '';
     setTimeout(() => document.getElementById('lock-text-input').focus(), 100);
-  } else {
-    ddEl.value = ''; mmEl.value = ''; yyyyEl.value = '';
-  }
+  } else { ddEl.value = ''; mmEl.value = ''; yyyyEl.value = ''; }
 }
 
 function showNoteContent(idx) {
   document.getElementById('lock-prompt').classList.remove('active');
   document.getElementById('note-content-view').classList.add('active');
-
   const body = notes[idx].body;
   const paragraphs = body.split('\n\n');
   let html = '';
@@ -1363,14 +1083,13 @@ function showNoteContent(idx) {
 function submitAnswer() {
   const idx = currentNote;
   const note = notes[idx];
-
   const onSubLock = note.subLock && trolled[idx];
   const source = onSubLock ? note.subLock : note;
 
   let userAnswer = '';
   if (source.type === 'date') {
     const d = ddEl.value, m = mmEl.value, y = yyyyEl.value;
-    if (!d || !m || !y) { showError(source.errorMsg); return; }
+    if (!d || !m || !y) { showError(source.errorMsg, source.type); return; }
     userAnswer = `${d}/${m}/${y}`;
   } else {
     userAnswer = document.getElementById('lock-text-input').value.trim();
@@ -1382,37 +1101,27 @@ function submitAnswer() {
   if (correct) {
     if (!onSubLock && note.subLock) {
       trolled[idx] = true;
-
       const starEl = document.getElementById(`star-${idx}`);
       starEl.classList.remove('active', 'dim');
       starEl.classList.add('lit');
       triggerStarImpact(idx);
-
       closeNote();
-
       setTimeout(() => {
         dudPathway(idx, idx + 1).then(() => {
           starEl.classList.remove('lit');
           starEl.classList.add('active');
-          setTimeout(() => {
-            showNotificationCustom(note.trollNotif || 'hehe ye toh annoy krne k lye daala tha');
-          }, 400);
+          setTimeout(() => { showNotificationCustom(note.trollNotif || 'hehe ye toh annoy krne k lye daala tha'); }, 400);
         });
       }, 800);
-
     } else {
       unlocked[idx] = true;
-
       const starEl = document.getElementById(`star-${idx}`);
       starEl.classList.remove('active', 'dim');
       starEl.classList.add('lit');
       triggerStarImpact(idx);
-
       const pathFrom = idx;
       const isLast = pathFrom === starPositions.length - 1;
-
       closeNote();
-
       if (!isLast) {
         setTimeout(() => {
           showNotification(notes[pathFrom].label);
@@ -1423,25 +1132,32 @@ function submitAnswer() {
           });
         }, 1300);
       } else {
-        setTimeout(() => {
-          showNotification(notes[pathFrom].label);
-        }, 1300);
+        setTimeout(() => { showNotification(notes[pathFrom].label); }, 1300);
       }
     }
-
   } else {
     if (!onSubLock && source.specialAnswer && userAnswer.toLowerCase() === source.specialAnswer.toLowerCase()) {
-      showError(source.specialErrorMsg);
+      showError(source.specialErrorMsg, source.type);
     } else {
-      showError(source.errorMsg);
+      showError(source.errorMsg, source.type);
     }
   }
 }
 
-function showError(msg) {
+// ── SHOW ERROR WITH SHAKE ──
+function showError(msg, type) {
   const errEl = document.getElementById('lock-error');
   errEl.textContent = msg;
   errEl.classList.add('visible');
+
+  const isDate = type === 'date';
+  const targetEl = isDate
+    ? document.getElementById('lock-date-row')
+    : document.getElementById('lock-text-input');
+
+  targetEl.classList.remove('shake');
+  void targetEl.offsetWidth;
+  targetEl.classList.add('shake');
 }
 
 function closeNote() {
@@ -1450,9 +1166,7 @@ function closeNote() {
   document.getElementById('note-content-view').classList.remove('active');
 }
 
-function overlayClick(e) {
-  if (e.target === document.getElementById('overlay')) closeNote();
-}
+function overlayClick(e) { if (e.target === document.getElementById('overlay')) closeNote(); }
 
 window.addEventListener('resize', () => {
   if (conCanvas) {
