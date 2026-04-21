@@ -635,16 +635,19 @@ for(let y=2020;y<=2030;y++){const o=document.createElement('option');o.value=Str
 // ─────────────────────────────────────────────
 // AUDIO
 // ─────────────────────────────────────────────
-const bgAudio = new Audio('sajni.mp3');
-bgAudio.loop = true;
-bgAudio.volume = 0;
+let bgAudio;
 
 function startExperience() {
   document.getElementById('enter-screen').style.display = 'none';
-  bgAudio.currentTime = 211; // start at 3:31
-  bgAudio.play().catch(() => {});
 
-  // fade in volume
+  bgAudio = new Audio('sajni.mp3');
+  bgAudio.loop = true;
+  bgAudio.volume = 0;
+
+  bgAudio.play().then(() => {
+    bgAudio.currentTime = 211;
+  }).catch((e) => { console.log('audio error:', e); });
+
   let vol = 0;
   const fadeIn = setInterval(() => {
     vol = Math.min(vol + 0.02, 0.5);
@@ -654,7 +657,7 @@ function startExperience() {
 
   runScene1();
 }
-
+  
 // ─────────────────────────────────────────────
 // SCENE 1 — PARTICLE + TEXT ANIMATION
 // ─────────────────────────────────────────────
