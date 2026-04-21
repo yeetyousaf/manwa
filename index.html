@@ -10,13 +10,21 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; cursor: none !important; }
 
     body {
       font-family: 'Cormorant Garamond', serif;
       background: #0a0e27;
       color: #e0e6ff;
       overflow: hidden;
+    }
+
+    /* ── CURSOR TRAIL CANVAS (global) ── */
+    #cursor-trail-canvas-global {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      pointer-events: none;
     }
 
     /* ── ENTER SCREEN ── */
@@ -29,6 +37,10 @@
     align-items: center;
     justify-content: center;
     background: #0a0e27;
+    cursor: default;
+  }
+
+    .speaker-icon {
     cursor: pointer;
   }
     
@@ -193,6 +205,16 @@
       white-space: nowrap;
       text-transform: uppercase;
       text-shadow: 0 0 20px rgba(180, 200, 255, 0.4);
+      opacity: 0;
+      animation: bubble-pop 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.4s forwards;
+    }
+
+    @keyframes bubble-pop {
+      0%   { opacity: 0; transform: translateX(-50%) scale(0.4); filter: blur(6px); }
+      55%  { opacity: 1; transform: translateX(-50%) scale(1.12); filter: blur(0px); }
+      72%  { transform: translateX(-50%) scale(0.94); }
+      88%  { transform: translateX(-50%) scale(1.04); }
+      100% { opacity: 1; transform: translateX(-50%) scale(1); filter: blur(0px); }
     }
 
     .star-wrapper {
@@ -501,16 +523,19 @@
 </head>
 <body>
 
+<!-- CUSTOM CURSOR -->
+<canvas id="cursor-trail-canvas-global"></canvas>
+
 <!-- ENTER SCREEN -->
-<div id="enter-screen" onclick="startExperience()">
-  <span class="speaker-icon" id="speaker-btn">
+<div id="enter-screen">
+  <span class="speaker-icon" id="speaker-btn" onclick="startExperience()">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
       <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
       <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
     </svg>
   </span>
-  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:1.8rem;letter-spacing:3px;color:#fffacd;text-align:center;margin-top:1.8rem;opacity:0.7;text-transform:uppercase;">open on laptop and use headphones for a better experience</p>
+  <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:1.8rem;letter-spacing:3px;color:#fffacd;text-align:center;margin-top:1.8rem;opacity:0.7;text-transform:uppercase;max-width:500px;line-height:1.5;">open on laptop and use headphones for a better experience</p>
 </div>
 
 <!-- PERSISTENT VIDEO BG — never fades -->
@@ -538,6 +563,7 @@
 <div id="scene2">
   <div class="constellation-title">— manwa k lye —</div>
   <div id="constellation-wrapper">
+    <canvas id="shooting-star-canvas" style="position:absolute;inset:0;z-index:0;pointer-events:none;"></canvas>
     <canvas id="constellation-canvas"></canvas>
     <div id="stars-container"></div>
   </div>
@@ -580,6 +606,63 @@
 </div>
 
 <script>
+// ─────────────────────────────────────────────
+// GLOBAL CUSTOM CURSOR + SPARKLE TRAIL
+// ─────────────────────────────────────────────
+const trailCanvas = document.getElementById('cursor-trail-canvas-global');
+const trailCtx = trailCanvas.getContext('2d');
+trailCanvas.width = window.innerWidth;
+trailCanvas.height = window.innerHeight;
+
+const sparkles = [];
+let mouseX = -999, mouseY = -999;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+
+  const count = 2 + Math.floor(Math.random() * 2);
+  for (let i = 0; i < count; i++) {
+    sparkles.push({
+      x: mouseX + (Math.random() - 0.5) * 6,
+      y: mouseY + (Math.random() - 0.5) * 6,
+      size: 0.8 + Math.random() * 2,
+      alpha: 0.6 + Math.random() * 0.4,
+      vx: (Math.random() - 0.5) * 0.5,
+      vy: -0.2 - Math.random() * 0.6,
+      decay: 0.025 + Math.random() * 0.03,
+      color: Math.random() > 0.5 ? '#fffacd' : '#c8d8ff'
+    });
+  }
+});
+
+function animateTrail() {
+  trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+  for (let i = sparkles.length - 1; i >= 0; i--) {
+    const s = sparkles[i];
+    s.x += s.vx;
+    s.y += s.vy;
+    s.alpha -= s.decay;
+    if (s.alpha <= 0) { sparkles.splice(i, 1); continue; }
+    trailCtx.save();
+    trailCtx.globalAlpha = s.alpha;
+    trailCtx.fillStyle = s.color;
+    trailCtx.shadowColor = s.color;
+    trailCtx.shadowBlur = 5;
+    trailCtx.beginPath();
+    trailCtx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+    trailCtx.fill();
+    trailCtx.restore();
+  }
+  requestAnimationFrame(animateTrail);
+}
+animateTrail();
+
+window.addEventListener('resize', () => {
+  trailCanvas.width = window.innerWidth;
+  trailCanvas.height = window.innerHeight;
+});
+
 // ─────────────────────────────────────────────
 // NOTES DATA
 // ─────────────────────────────────────────────
@@ -700,7 +783,6 @@ class Particle {
 
 for (let i = 0; i < PARTICLE_COUNT; i++) particles.push(new Particle());
 
-// draw particles with small delay so canvas is properly sized
 setTimeout(() => {
   pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
   particles.forEach(p => p.draw());
@@ -770,6 +852,75 @@ function initScene2() {
   conCanvas.width = window.innerWidth;
   conCanvas.height = window.innerHeight;
 
+  // ── SHOOTING STAR SETUP ──
+  const ssCanvas = document.getElementById('shooting-star-canvas');
+  const ssCtx = ssCanvas.getContext('2d');
+  ssCanvas.width = window.innerWidth;
+  ssCanvas.height = window.innerHeight;
+
+  function launchShootingStar() {
+    // start from upper portion, travel diagonally down-right
+    const angle = (25 + Math.random() * 20) * Math.PI / 180;
+    const startX = Math.random() * ssCanvas.width * 0.7;
+    const startY = Math.random() * ssCanvas.height * 0.35;
+    const length = 120 + Math.random() * 160;
+    const speed = 5 + Math.random() * 4;
+    const tailLength = length;
+
+    let progress = 0;
+    const totalDist = length + tailLength;
+
+    function frame() {
+      ssCtx.clearRect(0, 0, ssCanvas.width, ssCanvas.height);
+      progress += speed;
+
+      const headX = startX + Math.cos(angle) * progress;
+      const headY = startY + Math.sin(angle) * progress;
+      const tailStartProgress = Math.max(0, progress - tailLength);
+      const tailX = startX + Math.cos(angle) * tailStartProgress;
+      const tailY = startY + Math.sin(angle) * tailStartProgress;
+
+      const fade = progress < tailLength ? progress / tailLength : 1 - (progress - tailLength) / tailLength;
+
+      const grad = ssCtx.createLinearGradient(tailX, tailY, headX, headY);
+      grad.addColorStop(0, `rgba(255, 250, 220, 0)`);
+      grad.addColorStop(0.6, `rgba(255, 248, 210, ${fade * 0.5})`);
+      grad.addColorStop(1, `rgba(255, 255, 240, ${fade})`);
+
+      ssCtx.save();
+      ssCtx.strokeStyle = grad;
+      ssCtx.lineWidth = 1.5;
+      ssCtx.shadowColor = 'rgba(255, 245, 160, 0.8)';
+      ssCtx.shadowBlur = 6;
+      ssCtx.beginPath();
+      ssCtx.moveTo(tailX, tailY);
+      ssCtx.lineTo(headX, headY);
+      ssCtx.stroke();
+      ssCtx.restore();
+
+      if (progress < totalDist) {
+        requestAnimationFrame(frame);
+      } else {
+        ssCtx.clearRect(0, 0, ssCanvas.width, ssCanvas.height);
+        scheduleNext();
+      }
+    }
+    frame();
+  }
+
+  function scheduleNext() {
+    const wait = 7000 + Math.random() * 9000;
+    setTimeout(launchShootingStar, wait);
+  }
+
+  // first star after a short delay
+  setTimeout(launchShootingStar, 3000);
+
+  window.addEventListener('resize', () => {
+    ssCanvas.width = window.innerWidth;
+    ssCanvas.height = window.innerHeight;
+  });
+
   const container = document.getElementById('stars-container');
   starPositions.forEach((pos, idx) => {
     const wrapper = document.createElement('div');
@@ -779,6 +930,31 @@ function initScene2() {
     wrapper.style.top  = (pos.y * 100) + '%';
     wrapper.style.transform = 'translate(-50%, -50%)';
     wrapper.onclick = () => clickStar(idx);
+    wrapper.addEventListener('mouseenter', () => {
+      if (!wrapper.classList.contains('active') && !wrapper.classList.contains('lit')) return;
+      const pos = getStarPx(idx);
+      const duration = 700;
+      const maxR = 22;
+      const start = Date.now();
+      function ripple() {
+        const t = Math.min(1, (Date.now() - start) / duration);
+        const eased = 1 - Math.pow(1 - t, 3);
+        const r = maxR * eased;
+        const alpha = (1 - t) * 0.55;
+        redrawConstellation();
+        conCtx.save();
+        conCtx.beginPath();
+        conCtx.arc(pos.x, pos.y, r, 0, Math.PI * 2);
+        conCtx.strokeStyle = `rgba(200, 220, 255, ${alpha})`;
+        conCtx.lineWidth = 1;
+        conCtx.shadowColor = 'rgba(200, 220, 255, 0.4)';
+        conCtx.shadowBlur = 5;
+        conCtx.stroke();
+        conCtx.restore();
+        if (t < 1) requestAnimationFrame(ripple);
+      }
+      ripple();
+    });
 
     const hit = document.createElement('div');
     hit.className = 'star-hit';
@@ -790,6 +966,12 @@ function initScene2() {
   });
 
   drawConstellationAnimated();
+
+  // keep redrawing so glow lines can pulse
+  (function pulseLoop() {
+    if (drawnGlow.length > 0) redrawConstellation();
+    requestAnimationFrame(pulseLoop);
+  })();
 }
 
 function getStarPx(idx) {
@@ -830,6 +1012,7 @@ function animateLine(fromIdx, toIdx, duration, color, lineWidth) {
 
 const drawnSegments = [];
 const drawnGlow = [];
+const hoverRipples = [];
 
 function redrawConstellation() {
   conCtx.clearRect(0, 0, conCanvas.width, conCanvas.height);
@@ -848,13 +1031,16 @@ function redrawConstellation() {
   });
 
   drawnGlow.forEach(g => {
-    const from = getStarPx(g.from);
     const to   = getStarPx(g.to);
+    const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 1400 + g.from);
+    const opacity = 0.45 + 0.35 * pulse;
+    const blur    = 6 + 10 * pulse;
+    const width   = 1.2 + 0.8 * pulse;
     conCtx.save();
-    conCtx.strokeStyle = 'rgba(255, 245, 160, 0.75)';
-    conCtx.lineWidth   = 2;
-    conCtx.shadowColor = 'rgba(255, 220, 80, 0.5)';
-    conCtx.shadowBlur  = 10;
+    conCtx.strokeStyle = `rgba(255, 245, 160, ${opacity})`;
+    conCtx.lineWidth   = width;
+    conCtx.shadowColor = 'rgba(255, 220, 80, 0.6)';
+    conCtx.shadowBlur  = blur;
     conCtx.beginPath();
     conCtx.moveTo(from.x, from.y);
     conCtx.lineTo(to.x, to.y);
@@ -940,9 +1126,6 @@ function triggerStarImpact(idx) {
   });
 }
 
-// ─────────────────────────────────────────────
-// DUD PATHWAY
-// ─────────────────────────────────────────────
 function dudPathway(fromIdx, toIdx) {
   return new Promise(resolve => {
     const from = getStarPx(fromIdx);
@@ -1202,7 +1385,6 @@ window.addEventListener('resize', () => {
   }
   pCanvas.width = window.innerWidth;
   pCanvas.height = window.innerHeight;
-  // redraw particles on resize
   setTimeout(() => {
     pCtx.clearRect(0, 0, pCanvas.width, pCanvas.height);
     particles.forEach(p => p.draw());
