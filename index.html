@@ -615,35 +615,87 @@ trailCanvas.width = window.innerWidth;
 trailCanvas.height = window.innerHeight;
 
 const sparkles = [];
-let mouseX = -999, mouseY = -999;
+let mouseX = window.innerWidth / 2;
+let mouseY = window.innerHeight / 2;
+let isMoving = false;
+let moveTimer = null;
+
+// Cursor dot state
+const cursorDot = {
+  x: mouseX,
+  y: mouseY,
+  radius: 5,
+  // inner glow ring pulse phase
+  phase: 0
+};
 
 document.addEventListener('mousemove', e => {
   mouseX = e.clientX;
   mouseY = e.clientY;
+  isMoving = true;
 
-  const count = 2 + Math.floor(Math.random() * 2);
+  // Clear the idle timer on each move
+  if (moveTimer) clearTimeout(moveTimer);
+  moveTimer = setTimeout(() => { isMoving = false; }, 80);
+
+  // Burst of sparkles while moving
+  const count = 3 + Math.floor(Math.random() * 3);
   for (let i = 0; i < count; i++) {
-    sparkles.push({
-      x: mouseX + (Math.random() - 0.5) * 6,
-      y: mouseY + (Math.random() - 0.5) * 6,
-      size: 0.8 + Math.random() * 2,
-      alpha: 0.6 + Math.random() * 0.4,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: -0.2 - Math.random() * 0.6,
-      decay: 0.025 + Math.random() * 0.03,
-      color: Math.random() > 0.5 ? '#fffacd' : '#c8d8ff'
-    });
+    spawnSparkle(mouseX, mouseY, true);
   }
 });
 
+function spawnSparkle(x, y, moving) {
+  const angle = Math.random() * Math.PI * 2;
+  const speed = moving
+    ? 0.4 + Math.random() * 1.2
+    : 0.1 + Math.random() * 0.4;
+  const spread = moving ? 6 : 3;
+
+  sparkles.push({
+    x: x + (Math.random() - 0.5) * spread,
+    y: y + (Math.random() - 0.5) * spread,
+    size: moving
+      ? 0.8 + Math.random() * 2.2
+      : 0.4 + Math.random() * 1.2,
+    alpha: moving
+      ? 0.55 + Math.random() * 0.45
+      : 0.2 + Math.random() * 0.3,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed - (moving ? 0.3 : 0.15),
+    decay: moving
+      ? 0.022 + Math.random() * 0.028
+      : 0.008 + Math.random() * 0.012,
+    color: Math.random() > 0.45 ? '#fffacd' : '#c8d8ff'
+  });
+}
+
+// Idle sparkle emitter — runs always, low rate
+let idleSparkleFrame = 0;
+function emitIdleSparkles() {
+  idleSparkleFrame++;
+  // emit roughly every 4 frames when idle, every 8 when moving (moving has its own burst)
+  if (!isMoving && idleSparkleFrame % 4 === 0) {
+    const count = 1 + Math.floor(Math.random() * 2);
+    for (let i = 0; i < count; i++) {
+      spawnSparkle(mouseX, mouseY, false);
+    }
+  }
+}
+
 function animateTrail() {
   trailCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+
+  emitIdleSparkles();
+
+  // ── Draw sparkle particles ──
   for (let i = sparkles.length - 1; i >= 0; i--) {
     const s = sparkles[i];
     s.x += s.vx;
     s.y += s.vy;
     s.alpha -= s.decay;
     if (s.alpha <= 0) { sparkles.splice(i, 1); continue; }
+
     trailCtx.save();
     trailCtx.globalAlpha = s.alpha;
     trailCtx.fillStyle = s.color;
@@ -654,6 +706,34 @@ function animateTrail() {
     trailCtx.fill();
     trailCtx.restore();
   }
+
+  // ── Draw cursor dot ──
+  cursorDot.phase += 0.045;
+  const pulse = 0.5 + 0.5 * Math.sin(cursorDot.phase);
+
+  // Outer soft halo
+  const haloR = 10 + 3 * pulse;
+  const halo = trailCtx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, haloR);
+  halo.addColorStop(0, `rgba(255, 250, 205, ${0.18 + 0.10 * pulse})`);
+  halo.addColorStop(1, 'rgba(255, 250, 205, 0)');
+  trailCtx.save();
+  trailCtx.fillStyle = halo;
+  trailCtx.beginPath();
+  trailCtx.arc(mouseX, mouseY, haloR, 0, Math.PI * 2);
+  trailCtx.fill();
+  trailCtx.restore();
+
+  // Core dot
+  trailCtx.save();
+  trailCtx.beginPath();
+  trailCtx.arc(mouseX, mouseY, 3.5, 0, Math.PI * 2);
+  trailCtx.fillStyle = '#fffacd';
+  trailCtx.shadowColor = '#fffacd';
+  trailCtx.shadowBlur = 8 + 6 * pulse;
+  trailCtx.globalAlpha = 0.92;
+  trailCtx.fill();
+  trailCtx.restore();
+
   requestAnimationFrame(animateTrail);
 }
 animateTrail();
@@ -859,7 +939,6 @@ function initScene2() {
   ssCanvas.height = window.innerHeight;
 
   function launchShootingStar() {
-    // start from upper portion, travel diagonally down-right
     const angle = (25 + Math.random() * 20) * Math.PI / 180;
     const startX = Math.random() * ssCanvas.width * 0.7;
     const startY = Math.random() * ssCanvas.height * 0.35;
@@ -913,7 +992,6 @@ function initScene2() {
     setTimeout(launchShootingStar, wait);
   }
 
-  // first star after a short delay
   setTimeout(launchShootingStar, 3000);
 
   window.addEventListener('resize', () => {
@@ -967,7 +1045,6 @@ function initScene2() {
 
   drawConstellationAnimated();
 
-  // keep redrawing so glow lines can pulse
   (function pulseLoop() {
     if (drawnGlow.length > 0) redrawConstellation();
     requestAnimationFrame(pulseLoop);
@@ -1012,7 +1089,6 @@ function animateLine(fromIdx, toIdx, duration, color, lineWidth) {
 
 const drawnSegments = [];
 const drawnGlow = [];
-const hoverRipples = [];
 
 function redrawConstellation() {
   conCtx.clearRect(0, 0, conCanvas.width, conCanvas.height);
@@ -1031,6 +1107,7 @@ function redrawConstellation() {
   });
 
   drawnGlow.forEach(g => {
+    const from = getStarPx(g.from);
     const to   = getStarPx(g.to);
     const pulse = 0.5 + 0.5 * Math.sin(Date.now() / 1400 + g.from);
     const opacity = 0.45 + 0.35 * pulse;
