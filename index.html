@@ -185,23 +185,23 @@
     #constellation-canvas { position: absolute; inset: 0; z-index: 1; }
 
     .constellation-title {
-    position: absolute;
-    top: 4.8rem;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-weight: 300;
-    font-size: 2.7rem;
-    letter-spacing: 6px;
-    color: #fffacd;
-    white-space: nowrap;
-    text-transform: uppercase;
-    text-shadow: 0 0 20px rgba(180, 200, 255, 0.4);
-    opacity: 0;
-    animation: bubble-pop 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.4s forwards;
-  }
+      position: absolute;
+      top: 4.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 2.7rem;
+      letter-spacing: 6px;
+      color: rgba(255, 245, 160, 0.75);
+      white-space: nowrap;
+      text-transform: uppercase;
+      text-shadow: 0 0 20px rgba(180, 200, 255, 0.4);
+      opacity: 0;
+      animation: bubble-pop 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.4s forwards;
+    }
 
     @keyframes bubble-pop {
       0%   { opacity: 0; transform: translateX(-50%) scale(0.4); filter: blur(6px); }
@@ -219,24 +219,24 @@
     }
 
     .star-hit {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-  }
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+    }
 
     .star {
-    width: 15px;
-    height: 15px;
-    border-radius: 50%;
-    background: #e0e6ff;
-    box-shadow: 0 0 6px rgba(224, 230, 255, 0.4);
-    transition: all 0.5s ease;
-    position: relative;
-  }
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #e0e6ff;
+      box-shadow: 0 0 6px rgba(224, 230, 255, 0.4);
+      transition: all 0.5s ease;
+      position: relative;
+    }
 
     .star-wrapper.dim .star { background: #2a3560; box-shadow: 0 0 3px rgba(42, 53, 96, 0.4); }
 
@@ -428,21 +428,21 @@
     #note-content-view.active { display: block; }
 
     .note-content {
-    font-family: 'Cinzel', serif;
-    font-size: 0.978rem;
-    line-height: 1.9;
-    color: #ccd6f6;
-    letter-spacing: 1px;
-    text-align: left;
-  }
-  
-  .note-content.urdu {
-    text-align: right;
-    font-family: 'Noto Nastaliq Urdu', serif;
-    font-size: 1.265rem;
-    line-height: 2.1;
-    direction: rtl;
-  }
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: #ccd6f6;
+      letter-spacing: 1px;
+      text-align: left;
+    }
+
+    .note-content.urdu {
+      text-align: right;
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 1.1rem;
+      line-height: 2.1;
+      direction: rtl;
+    }
 
     .note-content-para { margin-bottom: 1rem; }
 
@@ -1115,6 +1115,7 @@ async function triggerFinale() {
   if (finaleTriggered) return;
   finaleTriggered = true;
 
+  // Step 1: Star chain reaction
   for (let i = 0; i < starPositions.length; i++) {
     await delay(200);
     const starEl = document.getElementById(`star-${i}`);
@@ -1126,6 +1127,7 @@ async function triggerFinale() {
 
   await delay(500);
 
+  // Step 2: All 6 beams shoot simultaneously
   const pairs = [[0,1],[1,2],[2,3],[0,2],[1,3],[0,3]];
   pairs.forEach(([a, b]) => finaleBeams.push({ from: a, to: b, progress: 0 }));
 
@@ -1143,23 +1145,108 @@ async function triggerFinale() {
     beamFrame();
   });
 
-  const flashEl = document.getElementById('finale-flash');
-  flashEl.style.transition = 'background 0.12s ease';
-  flashEl.style.background = 'rgba(255, 255, 240, 0.82)';
-
-  await delay(140);
-
-  flashEl.style.transition = 'background 2.2s ease';
-  flashEl.style.background = 'rgba(255, 255, 240, 0)';
-
-  await delay(300);
+  // Move beams to permanent glow
   finaleBeams.forEach(b => { drawnGlow.push({ from: b.from, to: b.to }); });
   finaleBeams.length = 0;
-
   starPositions.forEach((_, i) => {
     const starEl = document.getElementById(`star-${i}`);
     starEl.classList.remove('finale-burst');
     starEl.classList.add('lit');
+  });
+
+  // Step 3: Bang — instant full white, hold 4 seconds
+  const flashEl = document.getElementById('finale-flash');
+  flashEl.style.transition = 'none';
+  flashEl.style.background = '#ffffff';
+
+  // Fade out background music
+  if (bgAudio) {
+    const fadeMusic = setInterval(() => {
+      bgAudio.volume = Math.max(0, bgAudio.volume - 0.04);
+      if (bgAudio.volume <= 0) { bgAudio.pause(); clearInterval(fadeMusic); }
+    }, 80);
+  }
+
+  await delay(4000);
+
+  // Step 4: Create video element and fade in over 3 seconds while white fades out
+  const vid = document.createElement('video');
+  vid.src = 'manwa_re.mp4';
+  vid.style.cssText = `
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; z-index: 9995;
+    opacity: 0; background: #000;
+    pointer-events: none;
+  `;
+  vid.playsInline = true;
+  vid.preload = 'auto';
+  document.body.appendChild(vid);
+
+  // Start playing
+  await vid.play().catch(e => console.log('video play error:', e));
+
+  // Crossfade: video fades in, white fades out — both over 3 seconds
+  const fadeDuration = 3000;
+  const fadeStart = Date.now();
+  await new Promise(resolve => {
+    function fadeFrame() {
+      const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
+      vid.style.opacity = t;
+      flashEl.style.opacity = 1 - t;
+      if (t < 1) requestAnimationFrame(fadeFrame);
+      else {
+        flashEl.style.background = 'none';
+        flashEl.style.opacity = 1;
+        resolve();
+      }
+    }
+    fadeFrame();
+  });
+
+  // Step 5: In last 4 seconds of video, fade audio out
+  let audioFading = false;
+  vid.addEventListener('timeupdate', () => {
+    if (!audioFading && vid.duration && (vid.duration - vid.currentTime) <= 4) {
+      audioFading = true;
+      const totalFade = 4000;
+      const startVol = vid.volume;
+      const fadeStart = Date.now();
+      const fadeAudio = setInterval(() => {
+        const t = Math.min(1, (Date.now() - fadeStart) / totalFade);
+        vid.volume = startVol * (1 - t);
+        if (t >= 1) { vid.volume = 0; clearInterval(fadeAudio); }
+      }, 50);
+    }
+  });
+
+  // Step 6: At video end — cut to black, then show enter screen
+  vid.addEventListener('ended', async () => {
+    // Instant black
+    vid.style.opacity = 0;
+    flashEl.style.transition = 'none';
+    flashEl.style.opacity = 1;
+    flashEl.style.background = '#000000';
+    document.body.removeChild(vid);
+
+    await delay(600);
+
+    // Fade in the enter screen from black
+    const enterScreen = document.getElementById('enter-screen');
+    enterScreen.style.opacity = '0';
+    enterScreen.style.transition = 'none';
+    enterScreen.style.display = 'flex';
+
+    await delay(50);
+
+    enterScreen.style.transition = 'opacity 1.8s ease';
+    enterScreen.style.opacity = '1';
+
+    // Fade out the black overlay
+    flashEl.style.transition = 'background 1.8s ease';
+    flashEl.style.background = 'rgba(0,0,0,0)';
+
+    await delay(1800);
+    flashEl.style.background = 'none';
   });
 }
 
