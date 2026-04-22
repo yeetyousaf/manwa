@@ -282,6 +282,7 @@
       animation: shake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
 
+    /* ── STAR NOTE OVERLAY ── */
     .overlay {
       display: none;
       position: fixed;
@@ -451,6 +452,115 @@
       .scene-line { white-space: normal; }
     }
 
+    /* ── FINALE OVERLAY ── */
+    #finale-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 252, 240, 0.55);
+      z-index: 9992;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+      padding: 2rem;
+    }
+
+    #finale-overlay.open { display: flex; }
+
+    .finale-overlay-content {
+      background: linear-gradient(135deg, rgba(255, 252, 245, 0.97) 0%, rgba(255, 248, 230, 0.97) 100%);
+      border: 1px solid rgba(180, 140, 60, 0.28);
+      border-radius: 6px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 82vh;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      box-shadow: 0 0 50px rgba(200, 160, 80, 0.15), inset 0 0 30px rgba(200, 160, 80, 0.06);
+      position: relative;
+      animation: overlay-open 0.35s ease;
+      overflow-y: auto;
+    }
+
+    .finale-note-label {
+      font-family: 'UnifrakturMaguntia', cursive;
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      color: #8b6914;
+      text-shadow: 0 0 15px rgba(180, 130, 30, 0.25);
+    }
+
+    .finale-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(180, 140, 60, 0.35), transparent);
+      flex-shrink: 0;
+    }
+
+    .finale-lock-question {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      line-height: 1.9;
+      color: #5a4010;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .finale-lock-input {
+      background: rgba(180, 140, 60, 0.07);
+      border: 1px solid rgba(180, 140, 60, 0.28);
+      border-radius: 4px;
+      padding: 0.7rem;
+      color: #3a2a05;
+      font-family: 'Cinzel', serif;
+      font-size: 1.20rem;
+      letter-spacing: 1px;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .finale-lock-input:focus {
+      border-color: rgba(180, 130, 30, 0.55);
+      background: rgba(180, 140, 60, 0.12);
+      box-shadow: 0 0 15px rgba(180, 130, 30, 0.18);
+    }
+
+    .finale-lock-submit {
+      align-self: flex-start;
+      background: rgba(180, 140, 60, 0.14);
+      border: 1px solid rgba(180, 130, 30, 0.38);
+      color: #7a5a10;
+      padding: 0.65rem 1.4rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+    }
+
+    .finale-lock-submit:hover {
+      background: rgba(180, 140, 60, 0.26);
+      box-shadow: 0 0 18px rgba(180, 130, 30, 0.2);
+    }
+
+    .finale-lock-error {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: #c0392b;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      min-height: 1.5rem;
+      display: none;
+    }
+
+    .finale-lock-error.visible { display: block; }
+
+    /* ── NOTIFICATION ── */
     #note-notification {
       position: fixed;
       bottom: 6rem;
@@ -481,6 +591,26 @@
       backdrop-filter: blur(12px);
       white-space: nowrap;
       box-shadow: 0 8px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,245,160,0.07);
+    }
+
+    /* finale notification variant (warm) */
+    #note-notification.finale-notif .notif-inner {
+      background: rgba(255, 250, 235, 0.96);
+      border: 1px solid rgba(180, 140, 60, 0.3);
+      box-shadow: 0 8px 36px rgba(180, 130, 30, 0.18), 0 0 0 1px rgba(180, 140, 60, 0.1);
+    }
+
+    #note-notification.finale-notif .notif-dot {
+      background: #b8860b;
+      box-shadow: 0 0 14px rgba(180, 130, 30, 0.7);
+    }
+
+    #note-notification.finale-notif .notif-text {
+      color: rgba(80, 55, 10, 0.85);
+    }
+
+    #note-notification.finale-notif .notif-text em {
+      color: #8b6914;
     }
 
     .notif-dot {
@@ -556,6 +686,7 @@
   </div>
 </div>
 
+<!-- STAR NOTE OVERLAY -->
 <div class="overlay" id="overlay" onclick="overlayClick(event)">
   <div class="overlay-content" onclick="event.stopPropagation()">
     <button class="close-btn" onclick="closeNote()">× close</button>
@@ -580,6 +711,19 @@
     <div id="note-content-view">
       <div class="note-content" id="note-body"></div>
     </div>
+  </div>
+</div>
+
+<!-- FINALE QUESTION OVERLAY -->
+<div id="finale-overlay">
+  <div class="finale-overlay-content" onclick="event.stopPropagation()">
+    <div class="finale-note-label">Final Question</div>
+    <div class="finale-divider"></div>
+    <div class="finale-lock-question">what is your name saved as in my phone?</div>
+    <input class="finale-lock-input" id="finale-lock-input" type="text" placeholder="your answer..."
+           autocomplete="off" onkeydown="if(event.key==='Enter')submitFinaleAnswer()"/>
+    <button class="finale-lock-submit" onclick="submitFinaleAnswer()">unlock</button>
+    <div class="finale-lock-error" id="finale-lock-error"></div>
   </div>
 </div>
 
@@ -728,7 +872,6 @@ const notes = [
 ];
 
 // ── FINALE STATE ──
-// Tracks whether note IV was opened (read) while unlocked, so finale fires on close
 let fourthNoteOpenedWhileUnlocked = false;
 let finaleTriggered = false;
 
@@ -743,18 +886,32 @@ for(let y=2020;y<=2030;y++){const o=document.createElement('option');o.value=Str
 // ── AUDIO ──
 let bgAudio;
 
+function fadeInAudio(audio, targetVol, step, interval) {
+  let vol = 0;
+  audio.volume = 0;
+  const fadeIn = setInterval(() => {
+    vol = Math.min(vol + step, targetVol);
+    audio.volume = vol;
+    if (vol >= targetVol) clearInterval(fadeIn);
+  }, interval);
+}
+
 function startExperience() {
   document.getElementById('enter-screen').style.display = 'none';
   bgAudio = new Audio('sajni.mp3');
-  bgAudio.loop = true;
+  bgAudio.loop = false;
   bgAudio.volume = 0;
   bgAudio.play().then(() => { bgAudio.currentTime = 211; }).catch(e => console.log('audio error:', e));
-  let vol = 0;
-  const fadeIn = setInterval(() => {
-    vol = Math.min(vol + 0.02, 0.5);
-    bgAudio.volume = vol;
-    if (vol >= 0.5) clearInterval(fadeIn);
-  }, 100);
+
+  // Loop back to 211 with fade in
+  bgAudio.addEventListener('ended', () => {
+    bgAudio.currentTime = 211;
+    bgAudio.volume = 0;
+    bgAudio.play().catch(e => console.log('audio loop error:', e));
+    fadeInAudio(bgAudio, 0.5, 0.02, 100);
+  });
+
+  fadeInAudio(bgAudio, 0.5, 0.02, 100);
   runScene1();
 }
 
@@ -829,13 +986,11 @@ function initScene2() {
   conCanvas.width = window.innerWidth;
   conCanvas.height = window.innerHeight;
 
-  // ── SHOOTING STARS (high frequency, multi-star) ──
   const ssCanvas = document.getElementById('shooting-star-canvas');
   const ssCtx = ssCanvas.getContext('2d');
   ssCanvas.width = window.innerWidth;
   ssCanvas.height = window.innerHeight;
 
-  // Pool of active stars — all drawn in a single shared rAF loop
   const activeStars = [];
 
   function spawnStar() {
@@ -880,7 +1035,6 @@ function initScene2() {
   }
   shootingStarLoop();
 
-  // ── SCHEDULER: 500–1200ms base interval, bursts of 1-3 stars ──
   function scheduleNext() {
     const interval = 500 + Math.random() * 700;
     setTimeout(() => {
@@ -1115,7 +1269,6 @@ async function triggerFinale() {
   if (finaleTriggered) return;
   finaleTriggered = true;
 
-  // Step 1: Star chain reaction
   for (let i = 0; i < starPositions.length; i++) {
     await delay(200);
     const starEl = document.getElementById(`star-${i}`);
@@ -1127,7 +1280,6 @@ async function triggerFinale() {
 
   await delay(500);
 
-  // Step 2: All 6 beams shoot simultaneously
   const pairs = [[0,1],[1,2],[2,3],[0,2],[1,3],[0,3]];
   pairs.forEach(([a, b]) => finaleBeams.push({ from: a, to: b, progress: 0 }));
 
@@ -1145,7 +1297,6 @@ async function triggerFinale() {
     beamFrame();
   });
 
-  // Move beams to permanent glow
   finaleBeams.forEach(b => { drawnGlow.push({ from: b.from, to: b.to }); });
   finaleBeams.length = 0;
   starPositions.forEach((_, i) => {
@@ -1154,12 +1305,7 @@ async function triggerFinale() {
     starEl.classList.add('lit');
   });
 
-  // Step 3: Bang — instant full white, hold 4 seconds
-  const flashEl = document.getElementById('finale-flash');
-  flashEl.style.transition = 'none';
-  flashEl.style.background = '#ffffff';
-
-  // Fade out background music
+  // Fade music out
   if (bgAudio) {
     const fadeMusic = setInterval(() => {
       bgAudio.volume = Math.max(0, bgAudio.volume - 0.04);
@@ -1167,9 +1313,47 @@ async function triggerFinale() {
     }, 80);
   }
 
-  await delay(4000);
+  // Fade white screen in
+  const flashEl = document.getElementById('finale-flash');
+  flashEl.style.transition = 'background 1.8s ease';
+  flashEl.style.background = '#ffffff';
 
-  // Step 4: Create video element and fade in over 3 seconds while white fades out
+  // Wait for white fade-in to complete then show final question popup
+  await delay(1900);
+  document.getElementById('finale-overlay').classList.add('open');
+  document.getElementById('finale-lock-input').value = '';
+  document.getElementById('finale-lock-error').textContent = '';
+  document.getElementById('finale-lock-error').classList.remove('visible');
+  setTimeout(() => document.getElementById('finale-lock-input').focus(), 100);
+}
+
+function submitFinaleAnswer() {
+  const input = document.getElementById('finale-lock-input');
+  const errEl = document.getElementById('finale-lock-error');
+  const answer = input.value.trim();
+
+  if (answer.toLowerCase() === 'manwa re') {
+    // Correct — close popup
+    document.getElementById('finale-overlay').classList.remove('open');
+
+    // Show warm notification
+    setTimeout(() => {
+      showFinaleNotification('hope you enjoyed it');
+    }, 400);
+
+  } else {
+    errEl.textContent = 'o yarrrrr';
+    errEl.classList.add('visible');
+    input.classList.remove('shake');
+    void input.offsetWidth;
+    input.classList.add('shake');
+  }
+}
+
+// Called after finale notif fully vanishes — plays the video
+function playFinaleVideo() {
+  const flashEl = document.getElementById('finale-flash');
+
   const vid = document.createElement('video');
   vid.src = 'manwa_re.mp4';
   vid.style.cssText = `
@@ -1182,29 +1366,21 @@ async function triggerFinale() {
   vid.preload = 'auto';
   document.body.appendChild(vid);
 
-  // Start playing
-  await vid.play().catch(e => console.log('video play error:', e));
+  vid.play().catch(e => console.log('video play error:', e));
 
-  // Video fades in on top of white — white stays fully opaque the whole time
-  // Only once video is fully visible do we remove the white underneath
   const fadeDuration = 3000;
   const fadeStart = Date.now();
-  await new Promise(resolve => {
-    function fadeFrame() {
-      const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
-      vid.style.opacity = t;
-      if (t < 1) requestAnimationFrame(fadeFrame);
-      else {
-        // Video fully opaque — safe to remove white underneath
-        flashEl.style.transition = 'none';
-        flashEl.style.background = 'none';
-        resolve();
-      }
+  function fadeFrame() {
+    const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
+    vid.style.opacity = t;
+    if (t < 1) requestAnimationFrame(fadeFrame);
+    else {
+      flashEl.style.transition = 'none';
+      flashEl.style.background = 'none';
     }
-    fadeFrame();
-  });
+  }
+  fadeFrame();
 
-  // Step 5: In last 4 seconds of video, fade audio out
   let audioFading = false;
   vid.addEventListener('timeupdate', () => {
     if (!audioFading && vid.duration && (vid.duration - vid.currentTime) <= 4) {
@@ -1220,9 +1396,7 @@ async function triggerFinale() {
     }
   });
 
-  // Step 6: At video end — cut to black, then show enter screen
   vid.addEventListener('ended', async () => {
-    // Instant black
     vid.style.opacity = 0;
     flashEl.style.transition = 'none';
     flashEl.style.opacity = 1;
@@ -1231,7 +1405,6 @@ async function triggerFinale() {
 
     await delay(600);
 
-    // Fade in the enter screen from black
     const enterScreen = document.getElementById('enter-screen');
     enterScreen.style.opacity = '0';
     enterScreen.style.transition = 'none';
@@ -1242,7 +1415,6 @@ async function triggerFinale() {
     enterScreen.style.transition = 'opacity 1.8s ease';
     enterScreen.style.opacity = '1';
 
-    // Fade out the black overlay
     flashEl.style.transition = 'background 1.8s ease';
     flashEl.style.background = 'rgba(0,0,0,0)';
 
@@ -1253,22 +1425,44 @@ async function triggerFinale() {
 
 // ── NOTIFICATION ──
 let _notifTimer = null;
+let _finaleNotifPending = false;
 
-function showNotification(label) { _triggerNotif(`note <em>${label}</em> can now be read`); }
-function showNotificationCustom(msg) { _triggerNotif(msg); }
+function showNotification(label) { _triggerNotif(`note <em>${label}</em> can now be read`, false); }
+function showNotificationCustom(msg) { _triggerNotif(msg, false); }
 
-function _triggerNotif(html) {
+function showFinaleNotification(msg) {
+  _finaleNotifPending = true;
+  _triggerNotif(msg, true);
+}
+
+function _triggerNotif(html, isFinale) {
   const el = document.getElementById('note-notification');
   const txt = document.getElementById('notif-text');
   txt.innerHTML = html;
+
+  if (isFinale) {
+    el.classList.add('finale-notif');
+  } else {
+    el.classList.remove('finale-notif');
+  }
+
   if (_notifTimer) { clearTimeout(_notifTimer); _notifTimer = null; }
   el.classList.remove('hide', 'show');
   void el.offsetWidth;
   el.classList.add('show');
+
   _notifTimer = setTimeout(() => {
     el.classList.remove('show');
     el.classList.add('hide');
-    _notifTimer = setTimeout(() => el.classList.remove('hide'), 500);
+    _notifTimer = setTimeout(() => {
+      el.classList.remove('hide');
+      // If this was the finale notif, start the video now
+      if (_finaleNotifPending) {
+        _finaleNotifPending = false;
+        el.classList.remove('finale-notif');
+        playFinaleVideo();
+      }
+    }, 500);
   }, 3600);
 }
 
@@ -1276,7 +1470,7 @@ function _triggerNotif(html) {
 const trolled = [false, false, false, false];
 
 function clickStar(idx) {
-  const passedCount = unlocked.filter((v, i) => v || trolled[i]).length;
+  const passedCount = unlocked.filter(v => v).length;
   if (idx !== passedCount && !unlocked[idx] && !trolled[idx]) return;
   currentNote = idx;
   const note = notes[idx];
@@ -1284,7 +1478,6 @@ function clickStar(idx) {
   document.getElementById('lock-error').textContent = '';
   document.getElementById('lock-error').classList.remove('visible');
 
-  // ── Flag that note IV was opened while unlocked (to trigger finale on close) ──
   if (idx === 3 && unlocked[idx] && !finaleTriggered) {
     fourthNoteOpenedWhileUnlocked = true;
   }
@@ -1376,11 +1569,9 @@ function submitAnswer() {
           });
         }, 1300);
       } else {
-        // ── Last note unlocked: show notification, wait for her to open & close note IV ──
         setTimeout(() => {
           showNotification(notes[pathFrom].label);
         }, 1300);
-        // fourthNoteOpenedWhileUnlocked will be set true when she opens it via clickStar
       }
     }
   } else {
@@ -1392,7 +1583,6 @@ function submitAnswer() {
   }
 }
 
-// ── SHOW ERROR WITH SHAKE ──
 function showError(msg, type) {
   const errEl = document.getElementById('lock-error');
   errEl.textContent = msg;
@@ -1413,7 +1603,6 @@ function closeNote() {
   document.getElementById('lock-prompt').classList.remove('active');
   document.getElementById('note-content-view').classList.remove('active');
 
-  // ── FINALE: fires when note IV is closed after having been read ──
   if (fourthNoteOpenedWhileUnlocked && !finaleTriggered) {
     fourthNoteOpenedWhileUnlocked = false;
     setTimeout(() => triggerFinale(), 1200);
