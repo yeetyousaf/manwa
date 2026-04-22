@@ -1185,18 +1185,19 @@ async function triggerFinale() {
   // Start playing
   await vid.play().catch(e => console.log('video play error:', e));
 
-  // Crossfade: video fades in, white fades out — both over 3 seconds
+  // Video fades in on top of white — white stays fully opaque the whole time
+  // Only once video is fully visible do we remove the white underneath
   const fadeDuration = 3000;
   const fadeStart = Date.now();
   await new Promise(resolve => {
     function fadeFrame() {
       const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
       vid.style.opacity = t;
-      flashEl.style.opacity = 1 - t;
       if (t < 1) requestAnimationFrame(fadeFrame);
       else {
+        // Video fully opaque — safe to remove white underneath
+        flashEl.style.transition = 'none';
         flashEl.style.background = 'none';
-        flashEl.style.opacity = 1;
         resolve();
       }
     }
