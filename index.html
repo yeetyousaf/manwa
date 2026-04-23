@@ -1465,7 +1465,7 @@ function playFinaleVideo() {
   vid.style.cssText = `
     position: fixed; inset: 0; width: 100%; height: 100%;
     object-fit: cover; z-index: 9995;
-    opacity: 0; background: #000;
+    opacity: 0;
     pointer-events: none;
   `;
   vid.playsInline = true;
@@ -1480,6 +1480,7 @@ function playFinaleVideo() {
   function fadeFrame() {
     const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
     vid.style.opacity = t;
+    flashEl.style.background = `rgba(255, 255, 255, ${1 - t})`;
     if (t < 1) requestAnimationFrame(fadeFrame);
     else {
       flashEl.style.transition = 'none';
