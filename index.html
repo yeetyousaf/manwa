@@ -199,7 +199,6 @@
       text-shadow: 0 0 20px rgba(180, 200, 255, 0.4);
       opacity: 0;
       animation: bubble-pop 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.4s forwards;
-      /* size + position handled by responsive block below */
       font-size: clamp(1rem, 2.8vw, 2.7rem);
       top: clamp(1.6rem, 4vh, 4.8rem);
     }
@@ -449,13 +448,10 @@
     .note-content-para { margin-bottom: 1rem; }
 
     /* ── RESPONSIVE ── */
-
-    /* Constellation title: scales down so it never overlaps star 2 on small laptops */
     .constellation-title {
       letter-spacing: clamp(2px, 0.8vw, 6px);
     }
 
-    /* Notification: scale padding + font on small screens, allow wrap on very small */
     .notif-inner {
       padding: clamp(1rem, 2.5vw, 1.8rem) clamp(1.2rem, 4vw, 3.6rem);
     }
@@ -466,13 +462,11 @@
       text-align: center;
     }
 
-    /* Star hit area: bigger on touch devices */
     @media (hover: none) and (pointer: coarse) {
       .star-hit { width: 56px; height: 56px; }
       .star { width: 12px; height: 12px; }
     }
 
-    /* Enter screen hint text */
     #enter-screen p {
       font-size: clamp(0.85rem, 2.5vw, 1.8rem) !important;
       white-space: normal !important;
@@ -485,13 +479,11 @@
       height: clamp(56px, 10vw, 90px);
     }
 
-    /* Scene 1 lines: already clamp() but remove nowrap on mobile */
     @media (max-width: 600px) {
       .scene-line { white-space: normal; text-align: center; padding: 0 1rem; }
       #text-group-top, #text-group-bottom { width: 90vw; }
     }
 
-    /* Overlay / note modal */
     .overlay { padding: clamp(0.8rem, 3vw, 2rem); }
     .overlay-content {
       padding: clamp(1.2rem, 4vw, 3rem);
@@ -505,7 +497,6 @@
     .note-content { font-size: clamp(0.72rem, 1.6vw, 0.85rem); }
     .note-content.urdu { font-size: clamp(0.9rem, 2vw, 1.1rem); }
 
-    /* Finale overlay */
     #finale-overlay { padding: clamp(0.8rem, 3vw, 2rem); }
     .finale-overlay-content {
       padding: clamp(1.2rem, 4vw, 3rem);
@@ -517,7 +508,6 @@
     .finale-lock-input { font-size: clamp(0.85rem, 2vw, 1.2rem); }
     .finale-lock-error { font-size: clamp(0.75rem, 1.8vw, 1.15rem); }
 
-    /* Phone-specific overrides */
     @media (max-width: 480px) {
       .overlay-content { padding: 1rem; border-radius: 4px; }
       .finale-overlay-content { padding: 1rem; border-radius: 4px; }
@@ -637,7 +627,6 @@
     .finale-lock-error.visible { display: block; }
 
     /* ── NOTIFICATION ── */
-    /* FIX 1: z-index raised to 9999 so it sits above finale-flash (9990) and finale-overlay (9993) */
     #note-notification {
       position: fixed;
       bottom: 6rem;
@@ -670,7 +659,6 @@
       box-shadow: 0 8px 36px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,245,160,0.07);
     }
 
-    /* finale notification variant (warm) */
     #note-notification.finale-notif .notif-inner {
       background: rgba(255, 250, 235, 0.96);
       border: 1px solid rgba(180, 140, 60, 0.3);
@@ -1394,7 +1382,6 @@ async function triggerFinale() {
   flashEl.style.transition = 'background 1.8s ease';
   flashEl.style.background = '#ffffff';
 
-  // Wait for white fade-in to complete then show final question popup
   await delay(1900);
   document.getElementById('finale-overlay').classList.add('open');
   document.getElementById('finale-lock-input').value = '';
@@ -1422,7 +1409,7 @@ function submitFinaleAnswer() {
   }
 }
 
-// FIX 3: Full state reset on loopback so re-watching starts clean
+// ── FULL STATE RESET ──
 function resetAllState() {
   // Reset logical state
   for (let i = 0; i < unlocked.length; i++) unlocked[i] = false;
@@ -1449,8 +1436,25 @@ function resetAllState() {
     conCtx.clearRect(0, 0, conCanvas.width, conCanvas.height);
   }
 
-  // Re-draw constellation lines animated
-  drawConstellationAnimated();
+  // ── FIX: Reset scene 1 lines so they fade in fresh ──
+  ['line-0', 'line-1', 'line-2', 'line-3'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+  });
+
+  // ── FIX: Reset scene 1 visibility ──
+  const scene1 = document.getElementById('scene1');
+  scene1.classList.remove('fade-out');
+  scene1.style.display = '';
+  scene1.style.opacity = '1';
+  scene1.style.pointerEvents = 'auto';
+
+  // ── FIX: Hide scene 2 ──
+  const scene2 = document.getElementById('scene2');
+  scene2.classList.remove('visible');
+  scene2.style.display = 'none';
+
+  // Re-draw constellation lines animated (runs after scene 1 plays via startExperience)
 }
 
 function playFinaleVideo() {
@@ -1470,7 +1474,8 @@ function playFinaleVideo() {
 
   vid.play().catch(e => console.log('video play error:', e));
 
-  const fadeDuration = 5000;
+  // ── FIX: 3 second fade in ──
+  const fadeDuration = 3000;
   const fadeStart = Date.now();
   function fadeFrame() {
     const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
@@ -1507,7 +1512,6 @@ function playFinaleVideo() {
 
     await delay(600);
 
-    // FIX 3: Reset state before showing enter screen again
     resetAllState();
 
     const enterScreen = document.getElementById('enter-screen');
