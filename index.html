@@ -1114,6 +1114,7 @@ function initScene2() {
   window.addEventListener('resize', () => { ssCanvas.width = window.innerWidth; ssCanvas.height = window.innerHeight; });
 
   const container = document.getElementById('stars-container');
+  container.innerHTML = '';
   starPositions.forEach((pos, idx) => {
     const wrapper = document.createElement('div');
     wrapper.className = `star-wrapper ${idx === 0 ? 'active' : 'dim'}`;
