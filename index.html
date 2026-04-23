@@ -458,7 +458,7 @@
       position: fixed;
       inset: 0;
       background: rgba(255, 252, 240, 0.55);
-      z-index: 9992;
+      z-index: 9993;
       align-items: center;
       justify-content: center;
       backdrop-filter: blur(4px);
@@ -561,12 +561,13 @@
     .finale-lock-error.visible { display: block; }
 
     /* ── NOTIFICATION ── */
+    /* FIX 1: z-index raised to 9999 so it sits above finale-flash (9990) and finale-overlay (9993) */
     #note-notification {
       position: fixed;
       bottom: 6rem;
       left: 50%;
       transform: translateX(-50%) translateY(80px);
-      z-index: 200;
+      z-index: 9999;
       opacity: 0;
       transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s ease;
       pointer-events: none;
@@ -903,7 +904,6 @@ function startExperience() {
   bgAudio.volume = 0;
   bgAudio.play().then(() => { bgAudio.currentTime = 211; }).catch(e => console.log('audio error:', e));
 
-  // Loop back to 211 with fade in
   bgAudio.addEventListener('ended', () => {
     bgAudio.currentTime = 211;
     bgAudio.volume = 0;
@@ -967,11 +967,12 @@ function fadeInLine(id) { const el = document.getElementById(id); if (el) el.cla
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ── SCENE 2 ──
+// FIX 2: y-positions shifted down by ~0.22 so stars clear the "manwa k lye" title
 const starPositions = [
-  { x: 0.18, y: 0.28 },
-  { x: 0.65, y: 0.20 },
-  { x: 0.30, y: 0.55 },
-  { x: 0.72, y: 0.72 }
+  { x: 0.18, y: 0.50 },
+  { x: 0.65, y: 0.42 },
+  { x: 0.30, y: 0.72 },
+  { x: 0.72, y: 0.88 }
 ];
 
 const unlocked = [false, false, false, false];
@@ -1333,14 +1334,10 @@ function submitFinaleAnswer() {
   const answer = input.value.trim();
 
   if (answer.toLowerCase() === 'manwa re') {
-    // Correct — close popup
     document.getElementById('finale-overlay').classList.remove('open');
-
-    // Show warm notification
     setTimeout(() => {
       showFinaleNotification('hope you enjoyed it');
     }, 400);
-
   } else {
     errEl.textContent = 'o yarrrrr';
     errEl.classList.add('visible');
@@ -1350,7 +1347,37 @@ function submitFinaleAnswer() {
   }
 }
 
-// Called after finale notif fully vanishes — plays the video
+// FIX 3: Full state reset on loopback so re-watching starts clean
+function resetAllState() {
+  // Reset logical state
+  for (let i = 0; i < unlocked.length; i++) unlocked[i] = false;
+  for (let i = 0; i < trolled.length; i++) trolled[i] = false;
+  fourthNoteOpenedWhileUnlocked = false;
+  finaleTriggered = false;
+
+  // Reset drawn constellation state
+  drawnSegments.length = 0;
+  drawnGlow.length = 0;
+  finaleBeams.length = 0;
+
+  // Reset star DOM classes
+  for (let i = 0; i < starPositions.length; i++) {
+    const starEl = document.getElementById(`star-${i}`);
+    if (starEl) {
+      starEl.classList.remove('active', 'lit', 'dim', 'finale-burst');
+      starEl.classList.add(i === 0 ? 'active' : 'dim');
+    }
+  }
+
+  // Clear the constellation canvas
+  if (conCtx && conCanvas) {
+    conCtx.clearRect(0, 0, conCanvas.width, conCanvas.height);
+  }
+
+  // Re-draw constellation lines animated
+  drawConstellationAnimated();
+}
+
 function playFinaleVideo() {
   const flashEl = document.getElementById('finale-flash');
 
@@ -1405,6 +1432,9 @@ function playFinaleVideo() {
 
     await delay(600);
 
+    // FIX 3: Reset state before showing enter screen again
+    resetAllState();
+
     const enterScreen = document.getElementById('enter-screen');
     enterScreen.style.opacity = '0';
     enterScreen.style.transition = 'none';
@@ -1456,7 +1486,6 @@ function _triggerNotif(html, isFinale) {
     el.classList.add('hide');
     _notifTimer = setTimeout(() => {
       el.classList.remove('hide');
-      // If this was the finale notif, start the video now
       if (_finaleNotifPending) {
         _finaleNotifPending = false;
         el.classList.remove('finale-notif');
