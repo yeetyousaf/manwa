@@ -1470,7 +1470,7 @@ function playFinaleVideo() {
 
   vid.play().catch(e => console.log('video play error:', e));
 
-  const fadeDuration = 3000;
+  const fadeDuration = 5000;
   const fadeStart = Date.now();
   function fadeFrame() {
     const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
