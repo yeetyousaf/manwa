@@ -1465,10 +1465,9 @@ function playFinaleVideo() {
   const isMobile = window.innerHeight > window.innerWidth;
   vid.style.cssText = `
     position: fixed; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: 9995;
+    object-fit: contain; z-index: 9995;
     opacity: 0;
     pointer-events: none;
-    ${isMobile ? 'transform: scale(0.7); transform-origin: center center;' : ''}
   `;
   vid.playsInline = true;
   vid.preload = 'auto';
