@@ -939,6 +939,8 @@ const notes = [
 // ── FINALE STATE ──
 let fourthNoteOpenedWhileUnlocked = false;
 let finaleTriggered = false;
+let pulseLoopActive = false;
+
 
 // ── DATE DROPDOWNS ──
 const ddEl = document.getElementById('dd');
@@ -1152,9 +1154,11 @@ function initScene2() {
   });
 
   drawConstellationAnimated();
+  pulseLoopActive = true;
   (function pulseLoop() {
-    if (drawnGlow.length > 0 || finaleBeams.length > 0) redrawConstellation();
-    requestAnimationFrame(pulseLoop);
+      if (!pulseLoopActive) return;
+      if (drawnGlow.length > 0 || finaleBeams.length > 0) redrawConstellation();
+      requestAnimationFrame(pulseLoop);
   })();
 }
 
@@ -1417,6 +1421,8 @@ function resetAllState() {
   for (let i = 0; i < trolled.length; i++) trolled[i] = false;
   fourthNoteOpenedWhileUnlocked = false;
   finaleTriggered = false;
+  pulseLoopActive = false;
+
 
   // Reset drawn constellation state
   drawnSegments.length = 0;
