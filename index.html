@@ -1461,7 +1461,7 @@ function playFinaleVideo() {
   const flashEl = document.getElementById('finale-flash');
 
   const vid = document.createElement('video');
-  vid.src = 'manwa_re.mp4';
+  vid.src = isMobile ? 'manwa_re_mobile.mp4' : 'manwa_re.mp4';
   const isMobile = window.innerHeight > window.innerWidth;
   vid.style.cssText = `
     position: fixed; inset: 0; width: 100%; height: 100%;
