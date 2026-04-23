@@ -1476,13 +1476,16 @@ function playFinaleVideo() {
   vid.play().catch(e => console.log('video play error:', e));
 
   // ── FIX: 3 second fade in ──
-  const fadeDuration = 5000;
+  const videoFadeDuration = 3000;
+  const whiteFadeDuration = 5000;
   const fadeStart = Date.now();
   function fadeFrame() {
-    const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
-    vid.style.opacity = t;
-    flashEl.style.background = `rgba(255, 255, 255, ${1 - t})`;
-    if (t < 1) requestAnimationFrame(fadeFrame);
+    const elapsed = Date.now() - fadeStart;
+    const videoT = Math.min(1, elapsed / videoFadeDuration);
+    const whiteT = Math.min(1, elapsed / whiteFadeDuration);
+    vid.style.opacity = videoT;
+    flashEl.style.background = `rgba(255, 255, 255, ${1 - whiteT})`;
+    if (whiteT < 1) requestAnimationFrame(fadeFrame);
     else {
       flashEl.style.transition = 'none';
       flashEl.style.background = 'none';
