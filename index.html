@@ -186,14 +186,12 @@
 
     .constellation-title {
       position: absolute;
-      top: 4.8rem;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3;
       font-family: 'Cormorant Garamond', serif;
       font-style: italic;
       font-weight: 300;
-      font-size: 2.7rem;
       letter-spacing: 6px;
       color: rgba(255, 245, 160, 0.75);
       white-space: nowrap;
@@ -201,6 +199,9 @@
       text-shadow: 0 0 20px rgba(180, 200, 255, 0.4);
       opacity: 0;
       animation: bubble-pop 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) 0.4s forwards;
+      /* size + position handled by responsive block below */
+      font-size: clamp(1rem, 2.8vw, 2.7rem);
+      top: clamp(1.6rem, 4vh, 4.8rem);
     }
 
     @keyframes bubble-pop {
@@ -447,9 +448,84 @@
 
     .note-content-para { margin-bottom: 1rem; }
 
-    @media (max-width: 768px) {
-      .overlay-content { padding: 1.8rem; max-height: 90vh; }
-      .scene-line { white-space: normal; }
+    /* ── RESPONSIVE ── */
+
+    /* Constellation title: scales down so it never overlaps star 2 on small laptops */
+    .constellation-title {
+      letter-spacing: clamp(2px, 0.8vw, 6px);
+    }
+
+    /* Notification: scale padding + font on small screens, allow wrap on very small */
+    .notif-inner {
+      padding: clamp(1rem, 2.5vw, 1.8rem) clamp(1.2rem, 4vw, 3.6rem);
+    }
+    .notif-text {
+      font-size: clamp(0.75rem, 2vw, 1.2rem);
+      letter-spacing: clamp(1px, 0.5vw, 3px);
+      white-space: normal;
+      text-align: center;
+    }
+
+    /* Star hit area: bigger on touch devices */
+    @media (hover: none) and (pointer: coarse) {
+      .star-hit { width: 56px; height: 56px; }
+      .star { width: 12px; height: 12px; }
+    }
+
+    /* Enter screen hint text */
+    #enter-screen p {
+      font-size: clamp(0.85rem, 2.5vw, 1.8rem) !important;
+      white-space: normal !important;
+      text-align: center !important;
+      padding: 0 1.5rem;
+      max-width: 90vw;
+    }
+    .speaker-icon {
+      width: clamp(56px, 10vw, 90px);
+      height: clamp(56px, 10vw, 90px);
+    }
+
+    /* Scene 1 lines: already clamp() but remove nowrap on mobile */
+    @media (max-width: 600px) {
+      .scene-line { white-space: normal; text-align: center; padding: 0 1rem; }
+      #text-group-top, #text-group-bottom { width: 90vw; }
+    }
+
+    /* Overlay / note modal */
+    .overlay { padding: clamp(0.8rem, 3vw, 2rem); }
+    .overlay-content {
+      padding: clamp(1.2rem, 4vw, 3rem);
+      max-height: 92vh;
+      gap: clamp(0.8rem, 2vw, 1.5rem);
+    }
+    .note-label { font-size: clamp(1.4rem, 4vw, 2.2rem); }
+    .lock-question { font-size: clamp(0.8rem, 2vw, 1.25rem); }
+    .lock-input, .date-select { font-size: clamp(0.85rem, 2vw, 1.2rem); }
+    .lock-error { font-size: clamp(0.75rem, 1.8vw, 1.15rem); }
+    .note-content { font-size: clamp(0.72rem, 1.6vw, 0.85rem); }
+    .note-content.urdu { font-size: clamp(0.9rem, 2vw, 1.1rem); }
+
+    /* Finale overlay */
+    #finale-overlay { padding: clamp(0.8rem, 3vw, 2rem); }
+    .finale-overlay-content {
+      padding: clamp(1.2rem, 4vw, 3rem);
+      max-height: 92vh;
+      gap: clamp(0.8rem, 2vw, 1.5rem);
+    }
+    .finale-note-label { font-size: clamp(1.4rem, 4vw, 2.2rem); }
+    .finale-lock-question { font-size: clamp(0.8rem, 2vw, 1.25rem); }
+    .finale-lock-input { font-size: clamp(0.85rem, 2vw, 1.2rem); }
+    .finale-lock-error { font-size: clamp(0.75rem, 1.8vw, 1.15rem); }
+
+    /* Phone-specific overrides */
+    @media (max-width: 480px) {
+      .overlay-content { padding: 1rem; border-radius: 4px; }
+      .finale-overlay-content { padding: 1rem; border-radius: 4px; }
+      .date-row { flex-wrap: wrap; }
+      .lock-submit, .finale-lock-submit { font-size: 0.75rem; padding: 0.55rem 1rem; }
+      #note-notification { bottom: 3rem; width: 90vw; left: 5vw; transform: translateY(80px); }
+      #note-notification.show { transform: translateY(0); }
+      #note-notification.hide { transform: translateY(-14px); }
     }
 
     /* ── FINALE OVERLAY ── */
@@ -967,12 +1043,11 @@ function fadeInLine(id) { const el = document.getElementById(id); if (el) el.cla
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ── SCENE 2 ──
-// FIX 2: y-positions shifted down by ~0.22 so stars clear the "manwa k lye" title
 const starPositions = [
-  { x: 0.18, y: 0.50 },
-  { x: 0.65, y: 0.42 },
-  { x: 0.30, y: 0.72 },
-  { x: 0.72, y: 0.88 }
+  { x: 0.18, y: 0.28 },
+  { x: 0.65, y: 0.20 },
+  { x: 0.30, y: 0.55 },
+  { x: 0.72, y: 0.72 }
 ];
 
 const unlocked = [false, false, false, false];
@@ -1395,7 +1470,7 @@ function playFinaleVideo() {
 
   vid.play().catch(e => console.log('video play error:', e));
 
-  const fadeDuration = 3000;
+  const fadeDuration = 5000;
   const fadeStart = Date.now();
   function fadeFrame() {
     const t = Math.min(1, (Date.now() - fadeStart) / fadeDuration);
