@@ -1464,8 +1464,15 @@ function playFinaleVideo() {
   const isMobile = window.innerHeight > window.innerWidth;
   vid.src = isMobile ? 'manwa_re_mobile.mp4' : 'manwa_re.mp4';
   vid.style.cssText = `
-    position: fixed; inset: 0; width: 100%; height: 100%;
-    object-fit: cover; z-index: 9995;
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100vw;
+    min-height: 100vh;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    z-index: 9995;
     opacity: 0;
     pointer-events: none;
   `;
